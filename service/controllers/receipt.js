@@ -7,9 +7,10 @@ exports.postReceipts = function(req, res) {
   var receipt = new Receipt();
 
   // Set the receipt properties that came from the POST data
-  receipt.name = receipt.body.name;
-  receipt.type = receipt.body.type;
-  receipt.sum = receipt.body.sum;
+  receipt.name = req.body.name;
+  receipt.category = req.body.category;
+  receipt.sum = req.body.sum;
+  receipt.userId = req.user._id;
 
   // Save the receipt and check for errors
   receipt.save(function(err) {

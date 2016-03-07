@@ -5,7 +5,8 @@ var mongoose = require('mongoose');
 var ReceiptSchema   = new mongoose.Schema({
   name: String,
   category: String,
-  sum: Number
+  sum: Number,
+  userId: String
 });
 
 // Export the Mongoose model

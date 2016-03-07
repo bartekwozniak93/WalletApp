@@ -8,7 +8,7 @@ var passport = require('passport');
 var authController = require('./controllers/auth');
 
 // Connect to the receiptwallet MongoDB
-mongoose.connect('mongodb://localhost:27017/receiptwallet');
+mongoose.connect('mongodb://admin:admin@ds047315.mongolab.com:47315/notesdbbw');
 
 // Create our Express application
 var app = express();
