@@ -11,12 +11,19 @@ var authController = require('./controllers/auth');
 mongoose.connect('mongodb://admin:admin@ds047315.mongolab.com:47315/notesdbbw');
 
 // Create our Express application
-var app = express();
+
+var express = require('express')
+    , cors = require('cors')
+    , app = express();
+
+app.use(cors());
 
 // Use the body-parser package in our application
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+
+
 
 // Use the passport package in our application
 app.use(passport.initialize());
