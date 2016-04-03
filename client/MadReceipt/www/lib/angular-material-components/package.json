@@ -1,0 +1,48 @@
+{
+  "name": "angular-material-components",
+  "version": "0.1.0",
+  "description": "Additional components for Angular Material",
+  "author": "Rémi Alvergnat <toilal.dev@gmail.com> (http://www.pragmasphere.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Toilal/angular-material-components/issues"
+  },
+  "homepage": "https://github.com/Toilal/angular-material-components",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Toilal/angular-material-components.git"
+  },
+  "keywords": [
+    "angular",
+    "material",
+    "components"
+  ],
+  "main": [
+    "dist/angular-material-components.js",
+    "dist/angular-material-components.css"
+  ],
+  "scripts": {
+    "test": "gulp test"
+  },
+  "dependencies": {
+    "angular-material": "^0.10.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-angular-filesort": "^1.1.1",
+    "gulp-angular-templatecache": "^1.7.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-csso": "^1.0.0",
+    "gulp-filter": "^2.0.2",
+    "gulp-load-plugins": "^1.0.0-rc",
+    "gulp-ng-annotate": "^1.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-ruby-sass": "^1.0.5",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-uglify": "^1.2.0",
+    "gulp-wrap": "^0.11.0",
+    "lazypipe": "^1.0.1",
+    "moment": "^2.10.3",
+    "require-dir": "^0.3.0"
+  }
+}

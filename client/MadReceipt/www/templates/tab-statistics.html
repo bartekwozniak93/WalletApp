@@ -1,0 +1,29 @@
+<ion-view view-title="Statistics" >
+  <ion-nav-buttons side="right">
+    <button class="button icon ion-log-out" ng-click="signInOut()">
+      Log in / out
+    </button>
+  </ion-nav-buttons>
+  <ion-content>
+
+    <h4>&nbsp;&nbsp;Statistics are only based on local receipts</h4>
+    <h5>{{errorMessage}}</h5>
+    <div class="card">
+      <div class="item item-divider">
+        Total by Date
+      </div>
+      <div class="item item-text-wrap">
+        <canvas id="line" class="chart chart-line" data="receiptsTotalByDate" labels="dates" legend="true" series="series" options="{showTooltips: false}"></canvas>
+      </div>
+      <h6>Total of all receipts: {{totalSum}}</h6>
+    </div>
+    <div class="card">
+      <div class="item item-divider">
+        <h2>Number of receipts by Category</h2>
+      </div>
+      <div class="item item-text-wrap">
+        <canvas id="bar" class="chart chart-bar" data="receiptsByCategory" labels="categories" legend="true" series="series" options="{showTooltips: false}"></canvas>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

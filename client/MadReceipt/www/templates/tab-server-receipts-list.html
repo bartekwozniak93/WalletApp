@@ -1,0 +1,26 @@
+<ion-view view-title="Server - Receipts List" ng-init="getReceiptsFromServer()">
+  <ion-nav-buttons side="right">
+    <button class="button icon ion-log-out" ng-click="signInOut()">
+      Log in / out
+    </button>
+  </ion-nav-buttons>
+  <ion-content>
+
+    {{connectionMessage}}
+    <ion-list>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="receipt in receipts"
+                type="item-text-wrap" href="#/tab/chats/{{chat.id}}">
+        <!--<img ng-src="{{receipt.}}">-->
+        <h2>Receipt Id: {{receipt._id}}</h2>
+        <p>User Id: {{receipt.userId}}</p>
+        <p>Category: {{receipt.category}}</p>
+        <p>Sum: {{receipt.sum}}</p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+
+        <button class="button ion-android-delete" ng-click="remove(receipt)">
+
+        </button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
