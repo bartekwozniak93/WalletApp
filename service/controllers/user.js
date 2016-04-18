@@ -1,31 +1,32 @@
 var nJwt = require('nJwt');
-
-// Load required packages
+var ValidToken = require('../controllers/validToken');
 var User = require('../models/user');
 var config = require('../config');
 
-// Create endpoint /api/users for POST
-exports.postUsers = function(req, res) {
-    var user = new User({
-        username: req.body.username,
-        password: req.body.password
-    });
 
-    user.save(function(err) {
+exports.postUsers = function(req, res, next) {
+    User.findOne({ 'local.email': req.body.email }, function(err, user) {
         if (err)
-            res.send(err);
+            return done(err);
+        if (user) {
+            res.json('That email is already taken.');
+        } else {
+            var user = new User();
+            user.local.email = req.body.email;
+            user.local.password = user.generateHash(req.body.password);
+            user.save(function(err) {
+                if (err)
+                    res.send(err);
 
-        var claims = {
-            sub: user._id
+                req.user = user;
+                next();
+            });
+
         }
-
-        var token = nJwt.create(claims, config.secret);
-        token.setExpiration(new Date().getTime() + (config.expirationtime));
-        res.json(token.compact());
     });
 };
 
-// Create endpoint /api/users for GET
+
 exports.getUsers = function(req, res) {
     User.find(function(err, users) {
         if (err)
