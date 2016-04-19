@@ -40,6 +40,8 @@ var router = express.Router();
 //    .put(authController.isAuthenticated, receiptController.putReceipt)
 //    .delete(authController.isAuthenticated, receiptController.deleteReceipt);
 
+router.route('/receipts/att')
+    .post(authController.isJWTAuthenticated, receiptController.postAtt);
 
 router.route('/local/users')
     .post(userController.postUsers, authController.generateToken)

@@ -13,7 +13,7 @@ var sync = require('synchronize');
 exports.authenticateLocal = function(req, res, next) {
     var email = req.body.email;
     var password = req.body.password;
-    if (email === null || email === "null" || email.length < 1 || password === null || password === "null" || password.length < 1) {
+    if (email === undefined  || password === undefined ) {
         res.end('Login or password cannot be empty.');
     } else {
         User.findOne({ 'local.email': email }, function(err, user) {
@@ -52,7 +52,7 @@ exports.generateToken = function(req, res) {
 exports.link = function(req, res) {
     var email = req.body.email;
     var password = req.body.password;
-    if (email === null || email === "null" || email.length < 1 || password === null || password === "null" || password.length < 1) {
+    if (email === undefined || password === undefined ) {
         res.end('Login or password cannot be empty.');
     } else {
         User.findOne({ _id: req.user._id }, function(err, user) {
@@ -113,6 +113,7 @@ passport.use(new JwtStrategy({
     strategy: ["HS256"],
     passReqToCallback: true
 }, function(req, jwt_payload, done) {
+    console.log('req');
     ValidTokenBase.findOne({ value: req.headers.authorization.split(" ")[1] }, function(err, validToken) {
         if (err) {
             return done(err, false);
