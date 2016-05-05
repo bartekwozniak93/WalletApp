@@ -46,7 +46,13 @@ exports.generateToken = function(req, res) {
     }, config.secret);
     token.setExpiration(new Date().getTime() + (config.expirationtime));
     ValidToken.postValidToken(token.compact(), req.user._id);
-    return res.json({ token: token.compact(), user: req.user });
+    console.log(JSON.stringify(req.body));
+    //if(req.body.redirectTo!=undefined){
+    //    
+    //    res.redirect(req.body.redirectTo+'?token=' + token.compact());}
+    //else{
+        res.redirect('/?token=' + token.compact());
+    //}
 }
 
 exports.link = function(req, res) {

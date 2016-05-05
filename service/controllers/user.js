@@ -35,3 +35,13 @@ exports.getUsers = function(req, res) {
         res.json(users);
     });
 };
+
+exports.getUser= function(req, res) {
+    User.findOne({ _id: req.user._id }, function(err, user) {
+        if (!user) {
+            res.end('There is no user.');
+        } else {
+            res.json(user);
+        }
+    });
+};
