@@ -1,18 +1,29 @@
 var Receipt = require('../models/receipt');
-
+var ocr=require('../models/ocr').OCR;
+var sync=require('synchronize');
 
 exports.postAtt = function(req, res) {
     console.log(req);
-    var receipt = new Receipt();
-    receipt.att = req.body.att;
-    receipt.userId = req.user._id;
-    receipt.save(function(err) {
-        if (err)
-            res.send(err);
-
-        res.json({ message: 'Receipt added to the wallet!', data: receipt });
-    });
-
+    sync.fiber(function(){
+		try{
+			var data = sync.await(ocr(req.body.att,sync.defer()));
+	    	var receipt = new Receipt();
+	    	receipt.att = req.body.att;
+	    	receipt.userId = req.user._id;
+			receipt.textReceipt = data.textReceipt;
+			receipt.companyName = data.companyName;
+			receipt.nip = data.nip;
+			receipt.dateReceipt = data.dateReceipt;
+			receipt.price = data.price;
+	    	receipt.save(function(err) {
+	        	if (err)
+	            	res.send(err);
+	        	res.json({ message: 'Receipt added to the wallet!', data: receipt });
+	    	});
+		}catch(err){
+			res.send(err);
+		}
+	});
 }
 
 //exports.postReceipts = function(req, res) {
