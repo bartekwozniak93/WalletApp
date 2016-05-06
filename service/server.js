@@ -25,20 +25,15 @@ passport.deserializeUser(function(user, done) {
 
 var router = express.Router();
 
+router.route('/receipts')
+  .post(authController.isJWTAuthenticated, receiptController.postReceipts)
+  .get(authController.isJWTAuthenticated, receiptController.getReceipts);
 
-// Create endpoint handlers for /receipts
-//router.route('/receipts')
-//    .post(authController.isJWTAuthenticated, receiptController.postReceipts)
-//    .get(authController.isJWTAuthenticated, receiptController.getReceipts);
-//
-//router.route('/receiptsa')
-//    .get(receiptController.getReceipts);
 
-// Create endpoint handlers for /receipts/:receipt_id
-//router.route('/receipts/:receipt_id')
-//    .get(authController.isAuthenticated, receiptController.getReceipt)
-//    .put(authController.isAuthenticated, receiptController.putReceipt)
-//    .delete(authController.isAuthenticated, receiptController.deleteReceipt);
+router.route('/receipts/:receipt_id')
+    .get(/*authController.isAuthenticated,*/ receiptController.getReceipt)
+    .put(/*authController.isAuthenticated,*/ receiptController.putReceipt)
+    .delete(/*authController.isAuthenticated,*/ receiptController.deleteReceipt);
 
 router.route('/receipts/att')
     .post(authController.isJWTAuthenticated, receiptController.postAtt);
@@ -73,8 +68,6 @@ router.get('/facebook/login/callback',
 
 router.route('/local/logout')
     .post(authController.isJWTAuthenticated, authController.logout);
-
-
 
 app.use('/api', router);
 
