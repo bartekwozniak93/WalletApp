@@ -11,8 +11,8 @@ var app = express();
 
 mongoose.connect(config.dbconnection);
 app.use(passport.initialize());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({limit: '10mb'}));
+app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
 
 passport.serializeUser(function(user, done) {
     done(null, user.id);

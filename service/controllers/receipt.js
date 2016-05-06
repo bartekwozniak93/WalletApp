@@ -6,22 +6,23 @@ exports.postAtt = function(req, res) {
     console.log(req);
     sync.fiber(function(){
 		try{
-			var data = sync.await(ocr(req.body.att,sync.defer()));
+		var data = sync.await(ocr(req.body.att,sync.defer()));
+		console.log(data);
 	    	var receipt = new Receipt();
 	    	receipt.att = req.body.att;
 	    	receipt.userId = req.user._id;
-			receipt.textReceipt = data.textReceipt;
-			receipt.companyName = data.companyName;
-			receipt.nip = data.nip;
-			receipt.dateReceipt = data.dateReceipt;
-			receipt.price = data.price;
+		receipt.textReceipt = data.textReceipt;
+		receipt.companyName = data.companyName;
+		receipt.nip = data.nip;
+		receipt.dateReceipt = data.dateReceipt;
+		receipt.price = data.price;
 	    	receipt.save(function(err) {
 	        	if (err)
-	            	res.send(err);
+	            		res.send(err);
 	        	res.json({ message: 'Receipt added to the wallet!', data: receipt });
 	    	});
 		}catch(err){
-			res.send(err);
+			res.json({message: 'Unable to read att ', error: err});
 		}
 	});
 }
