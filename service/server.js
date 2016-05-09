@@ -72,7 +72,7 @@ router.route('/facebook/unlink')
     .post(authController.isJWTAuthenticated, authController.unlinkFacebook);
 
 router.get('/facebook/login/callback',
-    passport.authenticate('facebook'), authController.generateToken);
+    passport.authenticate('facebook'), authController.generateTokenForFacebook);
 
 router.route('/local/logout')
     .post(authController.isJWTAuthenticated, authController.logout);
