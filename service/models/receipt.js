@@ -1,13 +1,16 @@
-// Load required packages
 var mongoose = require('mongoose');
 
-// Define our beer schema
 var ReceiptSchema   = new mongoose.Schema({
-  name: String,
-  category: String,
-  sum: Number,
-  userId: String
+	userId: String, 
+	categoryId: String, 
+	dateCreation: Date, 
+	dateLastModification: { type: Date, default: Date.now }, 
+	dateReceipt: String,
+	companyName: String,
+	nip: String,
+	price: Number,
+	textReceipt: String, 
+	att: Buffer
 });
 
-// Export the Mongoose model
 module.exports = mongoose.model('Receipt', ReceiptSchema);

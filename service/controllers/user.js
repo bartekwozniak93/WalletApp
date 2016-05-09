@@ -1,27 +1,47 @@
-// Load required packages
+var nJwt = require('nJwt');
+var ValidToken = require('../controllers/validToken');
 var User = require('../models/user');
+var config = require('../config');
 
-// Create endpoint /api/users for POST
-exports.postUsers = function(req, res) {
-  var user = new User({
-    username: req.body.username,
-    password: req.body.password
-  });
 
-  user.save(function(err) {
-    if (err)
-      res.send(err);
+exports.postUsers = function(req, res, next) {
+    User.findOne({ 'local.email': req.body.email }, function(err, user) {
+        if (err)
+            return done(err);
+        if (user) {
+            res.json('That email is already taken.');
+        } else {
+            var user = new User();
+            user.local.email = req.body.email;
+            user.local.password = user.generateHash(req.body.password);
+            user.save(function(err) {
+                if (err)
+                    res.send(err);
 
-    res.json({ message: 'New user added to the best app ever!' });
-  });
+                req.user = user;
+                next();
+            });
+
+        }
+    });
 };
 
-// Create endpoint /api/users for GET
-exports.getUsers = function(req, res) {
-  User.find(function(err, users) {
-    if (err)
-      res.send(err);
 
-    res.json(users);
-  });
+exports.getUsers = function(req, res) {
+    User.find(function(err, users) {
+        if (err)
+            res.send(err);
+
+        res.json(users);
+    });
+};
+
+exports.getUser= function(req, res) {
+    User.findOne({ _id: req.user._id }, function(err, user) {
+        if (!user) {
+            res.end('There is no user.');
+        } else {
+            res.json(user);
+        }
+    });
 };
