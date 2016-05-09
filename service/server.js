@@ -1,3 +1,4 @@
+
 // Load required packages
 var express = require('express');
 var mongoose = require('mongoose');
@@ -7,7 +8,9 @@ var userController = require('./controllers/user');
 var passport = require('passport');
 var authController = require('./controllers/auth');
 var config = require('./config');
-var app = express();
+var express = require('express')
+    , cors = require('cors')
+    , app = express();
 
 mongoose.connect(config.dbconnection);
 app.use(passport.initialize());
@@ -15,12 +18,12 @@ app.use(bodyParser.json({limit: '10mb'}));
 app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
 
 passport.serializeUser(function(user, done) {
-    done(null, user.id);
+  done(null, user.id);
 });
 passport.deserializeUser(function(user, done) {
-    User.findById(id, function(err, user) {
-        done(err, user);
-    });
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
 });
 
 var router = express.Router();
@@ -40,7 +43,10 @@ router.route('/receipts/att')
 
 router.route('/local/users')
     .post(userController.postUsers, authController.generateToken)
-    //.get(authController.isJWTAuthenticated, userController.getUsers);
+//.get(authController.isJWTAuthenticated, userController.getUsers);
+
+router.route('/local/user')
+    .get(authController.isJWTAuthenticated, userController.getUser);
 
 router.route('/local/login')
     .post(authController.authenticateLocal, authController.generateToken);
@@ -54,17 +60,17 @@ router.route('/local/unlink')
 router.post('/facebook/login', passport.authenticate('facebook', { scope: 'email' }));
 
 router.route('/facebook/link').post(function(request, response) {
-    passport.authenticate("facebook", {
-        scope: 'email',
-        state: request.body.authorization
-    })(request, response);
+  passport.authenticate("facebook", {
+    scope: 'email',
+    state: request.body.authorization
+  })(request, response);
 });
 
 router.route('/facebook/unlink')
     .post(authController.isJWTAuthenticated, authController.unlinkFacebook);
 
 router.get('/facebook/login/callback',
-    passport.authenticate('facebook'), authController.generateToken);
+    passport.authenticate('facebook'), authController.generateTokenForFacebook);
 
 router.route('/local/logout')
     .post(authController.isJWTAuthenticated, authController.logout);

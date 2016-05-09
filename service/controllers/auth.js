@@ -40,13 +40,29 @@ exports.authenticateLocal = function(req, res, next) {
     }
 };
 
+
+
 exports.generateToken = function(req, res) {
     var token = nJwt.create({
         sub: req.user._id
     }, config.secret);
     token.setExpiration(new Date().getTime() + (config.expirationtime));
     ValidToken.postValidToken(token.compact(), req.user._id);
-    return res.json({ token: token.compact(), user: req.user });
+    res.json({user: req.user, token:token.compact()});
+}
+
+exports.generateTokenForFacebook = function(req, res) {
+    var token = nJwt.create({
+        sub: req.user._id
+    }, config.secret);
+    token.setExpiration(new Date().getTime() + (config.expirationtime));
+    ValidToken.postValidToken(token.compact(), req.user._id);
+    //if(req.body.redirectTo!=undefined){
+    //    
+    //    res.redirect(req.body.redirectTo+'?token=' + token.compact());}
+    //else{
+        res.redirect('/?token=' + token.compact());
+    //}
 }
 
 exports.link = function(req, res) {
