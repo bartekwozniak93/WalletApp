@@ -13,6 +13,7 @@ var express = require('express')
     , app = express();
 
 mongoose.connect(config.dbconnection);
+app.use(cors());
 app.use(passport.initialize());
 app.use(bodyParser.json({limit: '10mb'}));
 app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
@@ -48,7 +49,7 @@ router.route('/local/users')
 router.route('/local/user')
     .get(authController.isJWTAuthenticated, userController.getUser);
 
-router.route('/local/login')
+router.route('/lcal/login')
     .post(authController.authenticateLocal, authController.generateToken);
 
 router.route('/local/link')
@@ -57,7 +58,7 @@ router.route('/local/link')
 router.route('/local/unlink')
     .post(authController.isJWTAuthenticated, authController.unlinkLocal);
 
-router.post('/facebook/login', passport.authenticate('facebook', { scope: 'email' }));
+router.get('/facebook/login', passport.authenticate('facebook', { scope: 'email' }));
 
 router.route('/facebook/link').post(function(request, response) {
   passport.authenticate("facebook", {

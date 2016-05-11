@@ -61,7 +61,8 @@ exports.generateTokenForFacebook = function(req, res) {
     //    
     //    res.redirect(req.body.redirectTo+'?token=' + token.compact());}
     //else{
-        res.redirect('/?token=' + token.compact());
+        
+        res.json(token.compact());
     //}
 }
 
