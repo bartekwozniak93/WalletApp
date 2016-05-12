@@ -57,13 +57,7 @@ exports.generateTokenForFacebook = function(req, res) {
     }, config.secret);
     token.setExpiration(new Date().getTime() + (config.expirationtime));
     ValidToken.postValidToken(token.compact(), req.user._id);
-    //if(req.body.redirectTo!=undefined){
-    //    
-    //    res.redirect(req.body.redirectTo+'?token=' + token.compact());}
-    //else{
-        
-        res.json(token.compact());
-    //}
+    res.redirect(JSON.parse(req.query.state).redirectTo+'?token=' + token.compact());
 }
 
 exports.link = function(req, res) {
@@ -130,7 +124,6 @@ passport.use(new JwtStrategy({
     strategy: ["HS256"],
     passReqToCallback: true
 }, function(req, jwt_payload, done) {
-    console.log('req');
     ValidTokenBase.findOne({ value: req.headers.authorization.split(" ")[1] }, function(err, validToken) {
         if (err) {
             return done(err, false);
@@ -166,21 +159,20 @@ passport.use(new FacebookStrategy({
         var jwtToken;
         var userIdFromToken;
 
-
         sync.fiber(function() {
             User.findOne({ 'facebook.id': profile.id }, function(err, userFromFacebook) {
                 if (err) {
                     return done(err);
                 }
-                if (req.query.state === undefined && userFromFacebook != null) {
+                if (JSON.parse(req.query.state).token === undefined && userFromFacebook != null) {
                     //For login method with Facebook
                     return done(null, userFromFacebook);
-                } else if (req.query.state !== undefined && userFromFacebook != null) {
+                } else if (JSON.parse(req.query.state).token !== undefined && userFromFacebook != null) {
                     //For linking method- facebook account is already linked
                     return done('Facebook account is already linked with another one.')
                 } else {
-                    if (req.query.state != null) {
-                        jwtToken = req.query.state.split(" ")[1];
+                    if (JSON.parse(req.query.state).token != null) {
+                        jwtToken = JSON.parse(req.query.state).token.split(" ")[1];
                     }
                     if (jwtToken == null) {
                         //Add new facebook account without local account - no token

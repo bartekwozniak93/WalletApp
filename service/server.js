@@ -49,7 +49,7 @@ router.route('/local/users')
 router.route('/local/user')
     .get(authController.isJWTAuthenticated, userController.getUser);
 
-router.route('/lcal/login')
+router.route('/local/login')
     .post(authController.authenticateLocal, authController.generateToken);
 
 router.route('/local/link')
@@ -58,12 +58,19 @@ router.route('/local/link')
 router.route('/local/unlink')
     .post(authController.isJWTAuthenticated, authController.unlinkLocal);
 
-router.get('/facebook/login', passport.authenticate('facebook', { scope: 'email' }));
+
+
+router.route('/facebook/login').post(function(request, response) {
+  passport.authenticate("facebook", {
+    scope: 'email',
+    state: JSON.stringify({redirectTo: request.body.redirectTo})
+  })(request, response);
+});
 
 router.route('/facebook/link').post(function(request, response) {
   passport.authenticate("facebook", {
     scope: 'email',
-    state: request.body.authorization
+    state: JSON.stringify({token: request.body.authorization})
   })(request, response);
 });
 
