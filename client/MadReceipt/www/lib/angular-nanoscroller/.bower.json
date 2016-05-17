@@ -32,7 +32,7 @@
     "tag": "v0.2.1",
     "commit": "9ad21eb041bbd6e1a25cfa29947983d0cd4ff2d1"
   },
-  "_source": "git://github.com/maxaon/angular-nanoscroller.git",
+  "_source": "https://github.com/maxaon/angular-nanoscroller.git",
   "_target": "~0.2.1",
   "_originalSource": "angular-nanoscroller"
 }

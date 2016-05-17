@@ -1,7 +1,7 @@
 <ion-view style="" title="Create account">
   <ion-content class="has-header" overflow-scroll="true" padding="true">
-    <div style="line-height: 250px; background-color: rgb(255, 255, 255); border: 1px solid rgb(238, 238, 238); border-radius: 3px; text-align: center;">
-      <i style="font-size: 64px; color: rgb(136, 136, 136); vertical-align: middle;" class="icon ion-image"></i>
+    <div class="logo">
+      <img src="img/icon.png" alt="test" height="250" width="250">
     </div>
     <form style="" class="list">
       <ion-list style="">
@@ -26,7 +26,7 @@
           <input placeholder="" type="password" ng-model="user.password_confirmed">
         </label>
       </ion-list>
-      <button class="button button-energized  button-block" style="border-radius:-1px -1px -1px -1px;" id="createAccount-button3" ng-click="signUp(iser.email, user.username, user.password,user.password_confirmed)">Sign up</button>
+      <button class="button button-energized  button-block" id="createAccount-button3" ng-click="signUp(iser.email, user.username, user.password,user.password_confirmed)">Sign up</button>
     </form>
   </ion-content>
 </ion-view>

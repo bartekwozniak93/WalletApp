@@ -6,7 +6,7 @@
     <form style="" class="list">
     <ion-list style="">
 
-      <div  style="line-height: 250px; background-color: rgb(255, 255, 255); border: 1px solid rgb(238, 238, 238); border-radius: 3px; text-align: center;"><img ng-src="{{receipt.image}}" style="width: 200px; height: 200px"></div>
+      <div class="test1"><img ng-src="{{receipt.image}}" style="width: 200px; height: 200px"></div>
 
       <label style="" class="item item-input">
         <span class="input-label">Category</span>
@@ -39,7 +39,7 @@
         <textarea placeholder="" type="text" rows="5" ng-model="receipt.description">{{receipt.description}}</textarea>
       </label>
     </ion-list>
-    <button class="button button-energized  button-block" style="border-radius:-1px -1px -1px -1px;" id="updateReceipt-button" ng-click="updateReceipt(receipt)">Update</button>
+    <button class="button button-energized  button-block" id="updateReceipt-button" ng-click="updateReceipt(receipt)">Update</button>
     </form>
 
   </ion-content>

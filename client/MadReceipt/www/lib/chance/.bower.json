@@ -28,7 +28,7 @@
     "tag": "0.5.6",
     "commit": "35458905acb6ac96c92ddd1cba3ffacdd30b382c"
   },
-  "_source": "git://github.com/victorquinn/chancejs.git",
+  "_source": "https://github.com/victorquinn/chancejs.git",
   "_target": "~0.5.6",
   "_originalSource": "chance"
 }

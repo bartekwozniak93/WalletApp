@@ -8,8 +8,7 @@
     "tag": "v1.0.0",
     "commit": "941c179d4b1d880a36b7ac0d1f772aa5b170ad6e"
   },
-  "_source": "git://github.com/khaeransori/ionic-ion-autoListDivider.git",
+  "_source": "https://github.com/khaeransori/ionic-ion-autoListDivider.git",
   "_target": "^1.0.0",
-  "_originalSource": "ionic-ion-auto-list-divider",
-  "_direct": true
+  "_originalSource": "ionic-ion-auto-list-divider"
 }

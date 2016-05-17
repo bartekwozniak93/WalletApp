@@ -28,7 +28,7 @@
     "branch": "master",
     "commit": "f5c2195050932a51976346880257812dbface06b"
   },
-  "_source": "git://github.com/chaosim/splitter.git",
+  "_source": "https://github.com/chaosim/splitter.git",
   "_target": "*",
   "_originalSource": "splitter"
 }

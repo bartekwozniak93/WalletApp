@@ -58,7 +58,7 @@ angular.module('receipt.controllers', [])
       }
     };
 
-    var show = function () {
+/*    var show = function () {
       $ionicLoading.show({
         template: '<ion-spinner class="spinner-energized"></ion-spinner>'
 
@@ -67,6 +67,6 @@ angular.module('receipt.controllers', [])
     };
     var hide = function () {
       $ionicLoading.hide();
-    };
+    };*/
 
   });

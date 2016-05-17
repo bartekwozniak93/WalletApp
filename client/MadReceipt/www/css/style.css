@@ -27,12 +27,35 @@
 }
 
 .customized-button-bar{
-
   float: right;
   display: inline-flex;
   flex-direction: row;
 }
 
+div.logo {
+/*  line-height: 250px;*/
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(238, 238, 238);
+  border-radius: 3px;
+  text-align: center;
+}
+
+div.spacer {
+  width: 287px;
+  height: 56px;
+}
+
+.button {
+  font-weight:bold;
+}
+
+.button-bar > .button.last {
+  border-radius: 0 4px 4px 0;
+}
+
+#upload {
+  display: none;
+}
 
 .center{
   display: -webkit-box;

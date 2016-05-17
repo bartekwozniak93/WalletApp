@@ -8,24 +8,18 @@
   <ion-content class="padding" overflow-scroll="true">
 
 
-    <div style="" class="button-bar">
+    <div class="button-bar">
       <button class="button button-dark  button-block icon ion-ios-camera" id="addReceipts-photo"
               ng-click="takePicture()"></button>
       <button class="button button-energized  button-block icon ion-images" id="addReceipts-gallery"
               ng-click="getPicturesFromGallery()"></button>
-      <!-- <button type="file" class="button button-dark  button-block icon ion-android-archive" id="addReceipts-files"
-               ></button>-->
-
-
-      <div class="fileUpload btn btn-primary">
-        <span>Upload</span>
-        <input type="file" class="upload" onchange="angular.element(this).scope().getFiles(this.files)" multiple />
-      </div>
+      <button class="button button-dark  button-block icon ion-upload last" id="addReceipts-upload" onclick="$(function(event){$('#upload:hidden').trigger('click');})"></button>
+      <input type="file" class="upload" id="upload" onchange="angular.element(this).scope().getFiles(this.files)" multiple />
 
     </div>
 
 
-    <div style="width: 287px; height: 56px;" class="spacer"></div>
+    <div class="spacer"></div>
 
     <div class="row gallery">
       <div class="col col-33" ng-repeat="img in receiptsImagesList">
@@ -33,10 +27,11 @@
       </div>
     </div>
 
-    <div style="width: 287px; height: 57px;" class="spacer"></div>
+    <div class="spacer"></div>
     <div style="" class="button-bar">
       <button class="button button-stable button-block" id="addReceipts-cancel" ng-click="deleteAllImages()">Cancel</button>
-      <button class="button button-dark  button-block" style="font-weight:bolder;" id="addReceipts-add" ng-click="addReceipts()">Add</button>
+      <button class="button button-dark  button-block last" id="addReceipts-add" ng-click="addReceipts()">Add</button>
     </div>
   </ion-content>
 </ion-view>
+

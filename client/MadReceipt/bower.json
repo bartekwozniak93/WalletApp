@@ -6,5 +6,9 @@
   },
   "dependencies": {
     "angular-material-components": "^0.1.0"
+  },
+  "resolutions": {
+    "angular-animate": "1.4.3",
+    "angular": "^1"
   }
 }

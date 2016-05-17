@@ -35,7 +35,7 @@
     "tag": "0.8.7",
     "commit": "453712cb33b9f072ba28f455aac9da757ac0dab7"
   },
-  "_source": "git://github.com/jamesflorentino/nanoScrollerJS.git",
+  "_source": "https://github.com/jamesflorentino/nanoScrollerJS.git",
   "_target": "~0.8.0",
   "_originalSource": "nanoscroller"
 }

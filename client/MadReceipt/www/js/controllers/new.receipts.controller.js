@@ -140,7 +140,6 @@ angular.module('newReceipts.controllers', [])
       return resizedImage.src;
     };
 
-
     var show = function () {
       $ionicLoading.show({
         template: '<ion-spinner class="spinner-energized"></ion-spinner>'
