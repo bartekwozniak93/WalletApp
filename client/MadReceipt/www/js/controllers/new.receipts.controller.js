@@ -7,7 +7,7 @@ angular.module('newReceipts.controllers', [])
 
     $scope.takePicture = function () {
 
-      try {
+      /*try {*/
         document.addEventListener("deviceready", function () {
 
           PhotosAndFilesService.getPicture().then(function (selectedImage) {
@@ -17,9 +17,9 @@ angular.module('newReceipts.controllers', [])
             messagesMaker('Problem with taking picture. Try again');
           });
         }, messagesMaker("Cannot take photo on this device"));
-      } catch (ex) {
+      /*} catch (ex) {
         messagesMaker("Cannot take photo on this device");
-      }
+      }*/
     };
 
     $scope.getPicturesFromGallery = function () {

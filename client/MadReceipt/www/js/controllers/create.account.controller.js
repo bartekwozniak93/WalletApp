@@ -1,7 +1,7 @@
 angular.module('account.controllers', [])
   .controller('CreateAccountCtrl', function ($scope, $state, $window, $http, $cordovaToast, ReceiptsServer) {
 
-    $scope.signUp = function (email, username, password, password_confirmed) {
+    $scope.signUp = function (email, password, password_confirmed) {
 
       var invalidPasswordMessage = checkPasswordStrength(password);
       if (invalidPasswordMessage != '') {
@@ -15,18 +15,19 @@ angular.module('account.controllers', [])
 
         } else {
 
-          ReceiptsServer.insertUser(email, username, password).then(function (response) {
-            if (response.data.message == "New user added to the best app ever!") {
+          ReceiptsServer.insertUser(email, password).then(function (response) {
 
-              messagesMaker(response.data.message);
-              //$window.sessionStorage.token = data.token;
-              $window.sessionStorage.token = '56ee6add41f6912a1931ebe6';
+            if (response.data != '"That email is already taken."') {
+
+              messagesMaker('Account is created');
+              $window.sessionStorage.token = response.data.token;
               $state.go('tab.newReceipt');
 
             } else {
-              messagesMaker("Username already exists!!!");
+              messagesMaker(response.data);
             }
           }, function (error) {
+
             messagesMaker("Error!!!");
           });
 

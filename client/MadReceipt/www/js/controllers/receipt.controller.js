@@ -1,5 +1,5 @@
 angular.module('receipt.controllers', [])
-  .controller('ReceiptCtrl', function ($scope, $state, $window, $stateParams, $cordovaToast, $ionicLoading, DatabaseService) {
+  .controller('ReceiptCtrl', function ($scope, $state, $window, $stateParams, $cordovaToast, $ionicLoading, DatabaseService, ReceiptsServer) {
     //$scope.chat = Chats.get($stateParams.chatId);
     $scope.$on('$ionicView.enter', function () {
       $scope.receipt=[];
@@ -31,6 +31,27 @@ angular.module('receipt.controllers', [])
       }, function (err) {
         messagesMaker('Error!!');
 
+      });
+    };
+
+    $scope.readReceipt = function(receiptId, receiptImage){
+      console.log(receiptImage);
+      alert(receiptImage);
+      ReceiptsServer.useOCR(receiptImage).then(function (response) {
+        messagesMaker(response.data.message);
+
+       /* if (response.data != '"Login or password is incorrect."') {
+
+          alert(response.data.token);
+          $window.sessionStorage.token = response.data.token;
+          $state.go('tab.newReceipt');
+
+        } else {
+          messagesMaker(response.data);
+        }*/
+      }, function (error) {
+
+        messagesMaker("Error!!!");
       });
     };
 

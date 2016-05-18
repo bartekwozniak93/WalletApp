@@ -4,8 +4,8 @@
   <ion-content>
     <div class="list">
       <label class="item item-input">
-        <span class="input-label">Username</span>
-        <input type="text"  ng-model="user.username">
+        <span class="input-label">Email</span>
+        <input type="text"  ng-model="user.email">
       </label>
       <label class="item item-input">
         <span class="input-label">Password</span>
@@ -13,7 +13,7 @@
       </label>
     </div>
     <div class="padding">
-      <button class="button button-block button-positive" ng-click="signIn(user.username, user.password)">
+      <button class="button button-block button-positive" ng-click="signIn(user.email, user.password)">
         Sign-In
       </button>
       <p class="text-center">

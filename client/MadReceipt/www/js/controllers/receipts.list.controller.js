@@ -46,6 +46,8 @@ angular.module('receiptsList.controllers', [])
 
 
 
+
+
     $scope.removeReceipt = function(receiptId){
       DatabaseService.remove(receiptId).then(function () {
 

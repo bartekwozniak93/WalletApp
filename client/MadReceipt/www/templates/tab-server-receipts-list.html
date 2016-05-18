@@ -1,26 +1,54 @@
 <ion-view view-title="Server - Receipts List" ng-init="getReceiptsFromServer()">
-  <ion-nav-buttons side="right">
-    <button class="button icon ion-log-out" ng-click="signInOut()">
-      Log in / out
-    </button>
-  </ion-nav-buttons>
-  <ion-content>
 
-    {{connectionMessage}}
-    <ion-list>
-      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="receipt in receipts"
-                type="item-text-wrap" href="#/tab/chats/{{chat.id}}">
-        <!--<img ng-src="{{receipt.}}">-->
-        <h2>Receipt Id: {{receipt._id}}</h2>
-        <p>User Id: {{receipt.userId}}</p>
-        <p>Category: {{receipt.category}}</p>
-        <p>Sum: {{receipt.sum}}</p>
-        <i class="icon ion-chevron-right icon-accessory"></i>
+<ion-nav-buttons side="right">
+  <button class="button icon ion-log-out" ng-click="signInOut()">
+    Log in / out
+  </button>
+</ion-nav-buttons>
+<ion-content>
 
-        <button class="button ion-android-delete" ng-click="remove(receipt)">
+  {{connectionMessage}}
+  <div class="button-bar" style="">
+    <button class='button button-dark item-button-right ion-ios-cloud-download'>&nbsp;&nbsp;Download Receipts&nbsp;&nbsp;</button>
+    <button class='button button-dark item-button-right ion-ios-cloud-upload'>&nbsp;&nbsp;Upload Receipts</button>
+  </div>
+  <form  class="list">
+    <label style="" class="item item-select">
+      <span class="input-label">Filters</span>
+      <select ng-model="selectedFilter" ng-change="filterBySelectedValue(selectedFilter)">
+        <option>None</option>
+        <option>Category</option>
+        <option>Date</option>
+        <option>Vendor</option>
+        <option>Currency</option>
+        <option>Total</option>
+      </select>
+    </label>
+  </form>
 
-        </button>
-      </ion-item>
-    </ion-list>
-  </ion-content>
+
+  <h3>Receipts no: {{receiptsNo}}</h3>
+  <h2>{{errorMessage}}</h2>
+  <ion-list>
+    <ion-item auto-list-divider auto-list-divider-value="{{receipt.category}}" class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="receipt in receipts" type="item-text-wrap" href="#/tab/receipts/{{receipt._id}}">
+   <!--   <h2>Receipt Id: {{receipt._id}}</h2>
+      <p>User Id: {{receipt.user._id}}</p>
+      <p>Category: {{receipt.categoryId}}</p>
+      <p>Sum: {{receipt.price}}</p>
+      <i class="icon ion-chevron-right icon-accessory"></i>
+
+      <button class="button ion-android-delete" ng-click="remove(receipt)">
+-->
+
+
+      <img ng-src="{{receipt.image}}">
+      <h2>Vendor: {{receipt.companyName}}</h2>
+
+      <p><b>Category:</b> {{receipt.categoryId}}  &nbsp;&nbsp;&nbsp;&nbsp;<b>Date:</b> {{receipt.dateReceipt}}</p>
+      <p><b>Currency:</b> {{receipt.currency}}  &nbsp;&nbsp;&nbsp;&nbsp;<b>Total:</b> {{receipt.price}}</p>
+      <i class="icon ion-chevron-right icon-accessory"></i>
+      <!--<button class="button ion-android-delete" ng-click="removeReceipt(receipt._id)"></button>-->
+    </ion-item>
+  </ion-list>
+</ion-content>
 </ion-view>
