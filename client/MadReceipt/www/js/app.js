@@ -1,5 +1,5 @@
 
-angular.module('starter', ['ionic', 'ngCordova','ionic.ion.autoListDivider', 'chart.js', 'starter.controllers', 'account.controllers', 'newReceipts.controllers', 'receipt.controllers', 'serverReceiptsList.controllers', 'receiptsList.controllers', 'statistics.controllers', 'starter.services', 'server.services', 'photos.and.files.services', 'database.services'])
+angular.module('starter', ['ionic', 'ngCordova','ionic.ion.autoListDivider', 'chart.js', 'starter.controllers', 'sign.in.controllers', 'account.controllers', 'newReceipts.controllers', 'receipt.controllers', 'serverReceiptsList.controllers', 'receiptsList.controllers', 'statistics.controllers', 'starter.services', 'server.services', 'photos.and.files.services', 'database.services', 'redirect.services'])
 
   .run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
@@ -105,6 +105,7 @@ angular.module('starter', ['ionic', 'ngCordova','ionic.ion.autoListDivider', 'ch
     $urlRouterProvider.otherwise('/start-page');
     //$urlRouterProvider.otherwise('/sign-in');
 
+    //$httpProvider.responseInterceptors.push('redirectInterceptor');
   })
 
 

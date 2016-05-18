@@ -122,6 +122,7 @@ angular.module('database.services', ['ionic', 'ngCordova'])
         return deferred.promise;
       },
 
+
       selectAll: function(){
         var deferred = $q.defer();
         var receiptsDB = createOrOpenDB();

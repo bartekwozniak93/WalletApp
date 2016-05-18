@@ -1,5 +1,5 @@
 angular.module('serverReceiptsList.controllers', [])
-  .controller('ServerReceiptsListCtrl', function ($scope, $window, $state, $http, $cordovaToast) {
+  .controller('ServerReceiptsListCtrl', function ($scope, $window, $state, $http, $cordovaToast, $ionicLoading, ReceiptsServer) {
 
     $scope.$on('$ionicView.enter', function() {
       $scope.receipts = [];
@@ -11,30 +11,23 @@ angular.module('serverReceiptsList.controllers', [])
       $scope.connectionMessage ='';
 
       if (window.navigator.onLine) {
-        var token = $window.sessionStorage.token;
+        var token = 'JWT ' + $window.sessionStorage.token;
+
 
         if (token == '') {
           $scope.connectionMessage = "You're not logged in";
         } else {
 
-          var req = {
-            method: 'GET',
-            url: 'http://localhost:5000/api/receipts',
+          ReceiptsServer.getAllReceipts().then(function (receiptsList) {
 
-            headers: {'Authorization': token}
-          };
+            hide();
+            $scope.receipts = receiptsList;
+            $scope.receiptsNo = receiptsList.length;
 
-          $http(req).then(function successCallback(response) {
+          }, function (err) {
+            hide();
+            messagesMaker('Error!!');
 
-            if (response.data != "Unauthorized") {
-
-              $scope.receipts = response.data;
-
-            } else {
-              $scope.connectionMessage = "Problem with connection to server";
-            }
-          }, function errorCallback(response) {
-            $scope.connectionMessage = "Problem with connection to server";
           });
         }
       } else {
@@ -71,6 +64,17 @@ angular.module('serverReceiptsList.controllers', [])
       var messageText = '<div style="align-content: center"><i class="icon ion-chatbubble-working"></i><h2>'+ message +'</h2></div>';
       $scope.connectionMessage = messageText;
     }
+
+    var show = function () {
+      $ionicLoading.show({
+        template: '<ion-spinner class="spinner-energized"></ion-spinner>'
+
+
+      });
+    };
+    var hide = function () {
+      $ionicLoading.hide();
+    };
 
 
   });

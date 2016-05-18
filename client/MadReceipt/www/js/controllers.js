@@ -80,24 +80,43 @@ angular.module('starter.controllers', ['ngCordova'])
     };
   })
 
-  .controller('SignInCtrl', function ($scope, $state, $window) {
+/*  .controller('SignInCtrl', function ($scope, $state, $window) {
 
-    $scope.signIn = function (user, password) {
+    $scope.signIn = function (email, password) {
 
       $window.sessionStorage.token = 'Basic bWFnZGEyOnRlc3Q=';
 
       $state.go('tab.newReceipt');
     };
 
-  })
+  })*/
 
 
 
-  .controller('StartPageCtrl', function ($scope, $state) {
+  .controller('StartPageCtrl', function ($scope, $state, $window, $http, $location) {
 
     $scope.goTo = function (destinationPage) {
 
       $state.go(destinationPage);
+    };
+
+    $scope.loginWithFacebook = function ($location) {
+     /* $window.alert("in login with fb");
+
+
+
+      $http({method: 'GET', url: 'http://localhost:5000/api/facebook/login', headers:{
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE"}}).
+      success(function() {
+        alert("success");
+      }).
+      error(function() {
+        alert("error");
+      });*/
+
+      var url = $location.absUrl().split('?')[0];
+      alert($location.absUrl().split('?')[0]);
     };
 
   })
