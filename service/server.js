@@ -11,8 +11,8 @@ var app = express();
 
 mongoose.connect(config.dbconnection);
 app.use(passport.initialize());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({limit: '10mb'}));
+app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
 
 passport.serializeUser(function(user, done) {
     done(null, user.id);
@@ -27,21 +27,18 @@ var router = express.Router();
 
 
 // Create endpoint handlers for /receipts
-//router.route('/receipts')
-//    .post(authController.isJWTAuthenticated, receiptController.postReceipts)
-//    .get(authController.isJWTAuthenticated, receiptController.getReceipts);
-//
-//router.route('/receiptsa')
-//    .get(receiptController.getReceipts);
+router.route('/receipts')
+    .post(authController.isJWTAuthenticated, receiptController.postAtt)
+    .get(authController.isJWTAuthenticated, receiptController.getReceipts);
 
 // Create endpoint handlers for /receipts/:receipt_id
-//router.route('/receipts/:receipt_id')
-//    .get(authController.isAuthenticated, receiptController.getReceipt)
-//    .put(authController.isAuthenticated, receiptController.putReceipt)
-//    .delete(authController.isAuthenticated, receiptController.deleteReceipt);
+router.route('/receipts/:receipt_id')
+    .get(authController.isJWTAuthenticated, receiptController.getReceipt)
+    .put(authController.isJWTAuthenticated, receiptController.putReceipt)
+    .delete(authController.isJWTAuthenticated, receiptController.deleteReceipt);
 
-router.route('/receipts/att')
-    .post(authController.isJWTAuthenticated, receiptController.postAtt);
+//router.route('/receipts/att')
+   // .post(authController.isJWTAuthenticated, receiptController.postAtt);
 
 router.route('/local/users')
     .post(userController.postUsers, authController.generateToken)
