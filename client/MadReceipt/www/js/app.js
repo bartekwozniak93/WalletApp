@@ -1,5 +1,4 @@
-
-angular.module('starter', ['ionic', 'ngCordova','ionic.ion.autoListDivider', 'chart.js', 'starter.controllers', 'sign.in.controllers', 'account.controllers', 'newReceipts.controllers', 'receipt.controllers', 'serverReceiptsList.controllers', 'receiptsList.controllers', 'statistics.controllers', 'starter.services', 'server.services', 'photos.and.files.services', 'database.services', 'redirect.services'])
+angular.module('starter', ['ionic', 'ngCordova', 'ionic.ion.autoListDivider', 'chart.js', 'starter.controllers', 'sign.in.controllers', 'account.controllers', 'newReceipts.controllers', 'receipt.controllers', 'receipt.server.controllers', 'serverReceiptsList.controllers', 'serverUpload.controllers', 'receiptsList.controllers', 'statistics.controllers', 'server.services', 'photos.and.files.services', 'database.services', 'redirect.services'])
 
   .run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
@@ -41,7 +40,6 @@ angular.module('starter', ['ionic', 'ngCordova','ionic.ion.autoListDivider', 'ch
       })
 
 
-
       // setup an abstract state for the tabs directive
       .state('tab', {
         url: '/tab',
@@ -70,6 +68,17 @@ angular.module('starter', ['ionic', 'ngCordova','ionic.ion.autoListDivider', 'ch
           }
         }
       })
+      .state('tab.server-receipt-detail', {
+        url: '/sreceipts/:receiptId',
+        views: {
+          'tab-server-receipts-list': {
+            templateUrl: 'templates/receipt-server-detail.html',
+            controller: 'ReceiptServerCtrl'
+          }
+        }
+      })
+
+
       .state('tab.receiptsList', {
         url: '/receiptsList',
         views: {
@@ -90,6 +99,15 @@ angular.module('starter', ['ionic', 'ngCordova','ionic.ion.autoListDivider', 'ch
         }
       })
 
+      .state('tab.receipt-upload', {
+        url: '/upload',
+        views: {
+          'tab-receipts-list': {
+            templateUrl: 'templates/receipts-server-upload.html',
+            controller: 'ServerUploadCtrl'
+          }
+        }
+      })
 
       .state('tab.statistics', {
         url: '/statistics',

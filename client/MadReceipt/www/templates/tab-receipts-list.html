@@ -6,33 +6,21 @@
   </ion-nav-buttons>
   <ion-content>
   <div class="button-bar" style="">
-      <button class='button button-dark item-button-right ion-ios-cloud-download'>&nbsp;&nbsp;Download Receipts&nbsp;&nbsp;</button>
-      <button class='button button-dark item-button-right ion-ios-cloud-upload'>&nbsp;&nbsp;Upload Receipts</button>
+    <button class='button button-dark item-button-right ion-ios-cloud-upload' ng-click="uploadReceipts()">&nbsp;&nbsp;Upload
+      Receipts to server
+    </button>
   </div>
-    <form  class="list">
-      <label style="" class="item item-select">
-         <span class="input-label">Filters</span>
-        <select ng-model="selectedFilter" ng-change="filterBySelectedValue(selectedFilter)">
-          <option>None</option>
-          <option>Category</option>
-          <option>Date</option>
-          <option>Vendor</option>
-          <option>Currency</option>
-          <option>Total</option>
-        </select>
-      </label>
-    </form>
 
 
     <h3>Receipts no: {{receiptsNo}}</h3>
     <h2>{{errorMessage}}</h2>
     <ion-list>
       <ion-item auto-list-divider auto-list-divider-value="{{receipt.category}}" class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="receipt in receipts" type="item-text-wrap" href="#/tab/receipts/{{receipt._id}}">
-        <img ng-src="{{receipt.image}}">
-        <h2>Vendor: {{receipt.vendor}}</h2>
+        <img ng-src="{{receipt.att}}">
+        <h2>Company: {{receipt.companyName}}</h2>
 
-        <p><b>Category:</b> {{receipt.category}}  &nbsp;&nbsp;&nbsp;&nbsp;<b>Date:</b> {{receipt._date}}</p>
-        <p><b>Currency:</b> {{receipt.currency}}  &nbsp;&nbsp;&nbsp;&nbsp;<b>Total:</b> {{receipt.total}}</p>
+        <p><b>Category:</b> {{receipt.category}} &nbsp;&nbsp;&nbsp;&nbsp;<b>Date:</b> {{receipt.dateReceipt}}</p>
+        <p><b>Total:</b> {{receipt.price}}</p>
         <i class="icon ion-chevron-right icon-accessory"></i>
 
         <!--<button class="button ion-android-delete" ng-click="removeReceipt(receipt._id)"></button>-->

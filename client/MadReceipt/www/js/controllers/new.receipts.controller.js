@@ -11,7 +11,7 @@ angular.module('newReceipts.controllers', [])
         document.addEventListener("deviceready", function () {
 
           PhotosAndFilesService.getPicture().then(function (selectedImage) {
-            console.log(selectedImage);
+
             $scope.receiptsImagesList.push("data:image/jpeg;base64," + selectedImage);
           }, function (err) {
             messagesMaker('Problem with taking picture. Try again');
@@ -82,6 +82,9 @@ angular.module('newReceipts.controllers', [])
             messagesMaker("Receipts saved");
             saveToServer("Do you want to save receipts in our server?");
 
+
+            //TODO: redirect to receipts list
+
           }, function (err) {
             hide();
             messagesMaker('Error!!');
@@ -110,7 +113,7 @@ angular.module('newReceipts.controllers', [])
             $scope.receiptsImagesList = [];
           }
         });
-    }
+    };
 
 
     var getFilesHelper = function (file) {

@@ -1,6 +1,6 @@
 angular.module('receipt.controllers', [])
-  .controller('ReceiptCtrl', function ($scope, $state, $window, $stateParams, $cordovaToast, $ionicLoading, DatabaseService, ReceiptsServer) {
-    //$scope.chat = Chats.get($stateParams.chatId);
+  .controller('ReceiptCtrl', function ($scope, $state, $window, $stateParams, $cordovaToast, $ionicLoading, DatabaseService) {
+
     $scope.$on('$ionicView.enter', function () {
       $scope.receipt=[];
       show();
@@ -34,30 +34,13 @@ angular.module('receipt.controllers', [])
       });
     };
 
-    $scope.readReceipt = function(receiptId, receiptImage){
-      console.log(receiptImage);
-      alert(receiptImage);
-      ReceiptsServer.useOCR(receiptImage).then(function (response) {
-        messagesMaker(response.data.message);
 
-       /* if (response.data != '"Login or password is incorrect."') {
-
-          alert(response.data.token);
-          $window.sessionStorage.token = response.data.token;
-          $state.go('tab.newReceipt');
-
-        } else {
-          messagesMaker(response.data);
-        }*/
-      }, function (error) {
-
-        messagesMaker("Error!!!");
-      });
-    };
 
     $scope.updateReceipt = function(receipt){
       DatabaseService.update(receipt).then(function () {
         messagesMaker("Receipt updated");
+
+        //TODO: redirect do listy paragonów
 
       }, function (err) {
         messagesMaker('Error!!');

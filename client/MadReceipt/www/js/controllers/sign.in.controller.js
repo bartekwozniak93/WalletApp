@@ -7,7 +7,6 @@ angular.module('sign.in.controllers', [])
 
         if (response.data != '"Login or password is incorrect."') {
 
-
           $window.sessionStorage.token = response.data.token;
           $state.go('tab.newReceipt');
 

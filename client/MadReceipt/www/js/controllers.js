@@ -18,9 +18,14 @@ angular.module('starter.controllers', ['ngCordova'])
 
     $scope.getReceiptsFromServer = function () {
 
+      console.log("in get rep");
+
+
       var token = $window.sessionStorage.token;
 
-      if ( token  == '') {
+      console.log(token);
+
+      if (token == undefined) {
         $window.alert("You're not logged in");
       } else {
 
@@ -92,8 +97,35 @@ angular.module('starter.controllers', ['ngCordova'])
   })*/
 
 
+  .controller('StartPageCtrl', function ($scope, $state, $window, $http, $location, $stateParams, ReceiptsServer) {
 
-  .controller('StartPageCtrl', function ($scope, $state, $window, $http, $location) {
+
+    $scope.$on('$ionicView.enter', function () {
+      console.log($location.search().token);
+      if ($location.search().token != undefined) {
+        $window.sessionStorage.token = $location.search().token;
+
+
+        ReceiptsServer.loginUserWithFacebook().then(function (response) {
+
+          if (response.data != '"Login or password is incorrect."') {
+
+
+            $state.go('tab.newReceipt');
+
+          } else {
+            alert(response.data);
+          }
+        }, function (error) {
+
+          alert($location.search().token);
+        });
+
+
+      }
+    });
+
+
 
     $scope.goTo = function (destinationPage) {
 
@@ -122,3 +154,5 @@ angular.module('starter.controllers', ['ngCordova'])
   })
 
 ;
+
+

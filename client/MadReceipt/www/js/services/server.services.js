@@ -47,23 +47,21 @@ angular.module('server.services', [])
 
     };
 
-    serverServices.useOCR = function (receiptImage) {
+    serverServices.loginUserWithFacebook = function () {
 
-      var dataToPost = 'att=' + receiptImage;
       var auth = 'JWT ' + $window.sessionStorage.token;
 
-      alert(auth);
-
       var req = {
-        method: 'POST',
-        url: 'http://localhost:5000/api/receipts/att',
+        method: 'GET',
+        url: 'http://localhost:5000/api/local/user',
         headers: {'Content-Type': 'application/x-www-form-urlencoded',
           "Authorization": auth,
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
           "Access-Control-Max-Age": "3600",
-          "Access-Control-Allow-Headers": "x-requested-with"},
-        data: dataToPost
+          "Access-Control-Allow-Headers": "x-requested-with"
+        }
+
       };
 
       return $http(req);
@@ -71,7 +69,62 @@ angular.module('server.services', [])
     };
 
 
-      serverServices.getAllReceipts = function () {
+    serverServices.insertReceipt = function (receipt) {
+      var image = receipt.att.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+
+      var dataToPost = {};
+      dataToPost["att"] = image;
+
+
+      if (receipt.dateReceipt != null) {
+        dataToPost["dateReceipt"] = receipt.dateReceipt;
+      }
+      if (receipt.nip != null) {
+        dataToPost["nip"] = receipt.nip;
+      }
+      if (receipt.companyName != null) {
+        dataToPost["companyName"] = receipt.companyName;
+      }
+      if (receipt.textReceipt != null) {
+        dataToPost["textReceipt"] = receipt.textReceipt;
+      }
+      if (receipt.price != null) {
+        dataToPost["price"] = receipt.price;
+      }
+
+      var auth = 'JWT ' + $window.sessionStorage.token;
+
+      return $http.post("http://localhost:5000/api/receipts", dataToPost, {
+        headers: {
+
+          "Authorization": auth,
+          "X-Powered-By": "Express",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE"
+        }
+      });
+
+
+    };
+
+    serverServices.selectReceipt = function (receiptId) {
+
+      var auth = 'JWT ' + $window.sessionStorage.token;
+
+      var url = 'http://localhost:5000/api/receipts/' + receiptId;
+
+      var req = {
+        method: 'GET',
+        url: url,
+        headers: {'Authorization': auth}
+      };
+
+      return $http(req);
+
+    };
+
+
+    serverServices.selectAllReceipts = function () {
 
         var auth = 'JWT ' + $window.sessionStorage.token;
 
@@ -85,6 +138,47 @@ angular.module('server.services', [])
 
       };
 
+    serverServices.updateReceipt = function (receipt) {
+
+      var auth = 'JWT ' + $window.sessionStorage.token;
+      var url = 'http://localhost:5000/api/receipts/' + receipt._id;
+
+      var dataToPost = {};
+
+      dataToPost["categoryId"] = ''; //TODO: Obecnie nie ma categoryID w paragonie
+      dataToPost["dateReceipt"] = receipt.dateReceipt;
+      dataToPost["nip"] = receipt.nip;
+      dataToPost["companyName"] = receipt.companyName;
+      /*dataToPost["textReceipt"] = receipt.textReceipt;*/ //TODO: Nie można wstawiać textReceipt
+      dataToPost["price"] = receipt.price;
+
+      var req = {
+        method: 'PUT',
+        url: url,
+        headers: {'Authorization': auth},
+        data: dataToPost
+      };
+
+      return $http(req);
+
+    };
+
+
+    serverServices.deleteReceipt = function (receiptId) {
+
+      var auth = 'JWT ' + $window.sessionStorage.token;
+
+      var url = 'http://localhost:5000/api/receipts/' + receiptId;
+
+      var req = {
+        method: 'DELETE',
+        url: url,
+        headers: {'Authorization': auth}
+      };
+
+      return $http(req);
+
+    };
 
 
     return serverServices;

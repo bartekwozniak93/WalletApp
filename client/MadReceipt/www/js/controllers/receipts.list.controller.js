@@ -45,6 +45,16 @@ angular.module('receiptsList.controllers', [])
     };
 
 
+    $scope.uploadReceipts = function () {
+      if ($window.sessionStorage.token != undefined) {
+        $scope.goTo('tab.receipt-upload');
+      } else {
+        messagesMaker("You must be logged in to send receipts");
+        $scope.goTo('signin');
+        //TODO: Okno z wybraniem metody logowania
+      }
+
+    };
 
 
 
@@ -92,6 +102,11 @@ angular.module('receiptsList.controllers', [])
     };
     var hide = function () {
       $ionicLoading.hide();
+    };
+
+    $scope.goTo = function (destinationPage) {
+
+      $state.go(destinationPage);
     };
 
 
