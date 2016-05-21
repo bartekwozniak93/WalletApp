@@ -1,54 +1,50 @@
 angular.module('newReceipts.controllers', [])
 
-  .controller('NewReceiptsCtrl', function ($scope, $window, $state, $cordovaImagePicker, $cordovaToast, $ionicLoading, $cordovaDialogs, PhotosAndFilesService, DatabaseService, $cordovaSQLite) {
-    $scope.secretMS = $window.sessionStorage.token;
+  .controller('NewReceiptsCtrl', function ($scope, $cordovaImagePicker, $cordovaDialogs, PhotosAndFilesService, DatabaseService, ReceiptsServer, DefService) {
 
     $scope.receiptsImagesList = [];
 
     $scope.takePicture = function () {
 
-      /*try {*/
-        document.addEventListener("deviceready", function () {
+      document.addEventListener("deviceready", function () {
 
-          PhotosAndFilesService.getPicture().then(function (selectedImage) {
-            console.log(selectedImage);
-            $scope.receiptsImagesList.push("data:image/jpeg;base64," + selectedImage);
-          }, function (err) {
-            messagesMaker('Problem with taking picture. Try again');
-          });
-        }, messagesMaker("Cannot take photo on this device"));
-      /*} catch (ex) {
-        messagesMaker("Cannot take photo on this device");
-      }*/
+        PhotosAndFilesService.getPicture().then(function (selectedImage) {
+
+          $scope.receiptsImagesList.push("data:image/jpeg;base64," + selectedImage);
+        }, function (err) {
+          DefService.messagesMaker('Problem with taking picture. Try again');
+        });
+      }, DefService.messagesMaker("Cannot take photo on this device"));
+
     };
 
     $scope.getPicturesFromGallery = function () {
 
       try {
         PhotosAndFilesService.getPicturesFromGallery().then(function (selectedImages) {
-          show();
+          DefService.show();
           for (var i = 0; i < selectedImages.length; i++) {
             $scope.receiptsImagesList.push(selectedImages[i]);
           }
-          hide();
-        }, function (err) {
-          messagesMaker('Error!!');
-          hide();
+          DefService.hide();
+        }, function (error) {
+          console.log(error);
+          DefService.hide();
         });
 
       } catch (ex) {
-        messagesMaker("Cannot open Gallery on this device");
-        hide();
+        DefService.messagesMaker("Cannot open Gallery on this device");
+        DefService.hide();
       }
     };
 
 
     $scope.getFiles = function (files) {
-      show();
+      DefService.show();
       if (files) {
         [].forEach.call(files, getFilesHelper);
       } else {
-        hide();
+        DefService.hide();
       }
 
 
@@ -71,109 +67,109 @@ angular.module('newReceipts.controllers', [])
       $scope.receiptsImagesList = [];
     };
 
-    $scope.addReceipts = function () {
-      if($scope.receiptsImagesList.length) {
-        show();
+    $scope.addReceiptsLocaly = function () {
+      if ($scope.receiptsImagesList.length) {
+        DefService.show();
         try {
           var receiptsList = $scope.receiptsImagesList;
           DatabaseService.insert(receiptsList).then(function () {
 
-            hide();
-            messagesMaker("Receipts saved");
-            saveToServer("Do you want to save receipts in our server?");
+            DefService.hide();
+            DefService.messagesMaker("Receipts saved");
+            DefService.goTo("tab.receiptsList");
 
-          }, function (err) {
-            hide();
-            messagesMaker('Error!!');
+          }, function (error) {
+            DefService.hide();
+            console.log(error);
 
           });
         } catch (ex) {
-          hide();
-          saveToServer("Unfortunately some browsers or devices do not support saving receipts :(\n\nDo you want to save receipts in our server?");
+          DefService.hide();
+
         }
       } else {
-        messagesMaker("No selected receipts");
+        DefService.messagesMaker("No receipts selected");
       }
     };
 
+    $scope.addReceiptsToServer = function () {
+      if ($scope.receiptsImagesList.length) {
+        DefService.goTo('tab.serverReceiptsList');
 
-    var saveToServer= function(message){
+
+        angular.forEach($scope.receiptsImagesList, function (receipt) {
+          DefService.show();
+
+          try {
+            ReceiptsServer.insertReceiptWithImageOnly(receipt).then(function () {
+              console.log("send success");
+              DatabaseService.updateOnlineStatus(receipt._id);
+
+
+            }, function (error) {
+              DefService.hide();
+              console.log(error);
+
+            });
+          } catch (ex) {
+            DefService.hide();
+            $scope.errorMessage = "Unfortunately some browsers or devices do not support saving receipts locally:(";
+          }
+
+        });
+
+
+        DefService.hide()
+      } else {
+        DefService.messagesMaker("No receipts selected");
+      }
+
+
+    };
+
+
+    $scope.save = function () {
+      console.log("in save");
+      var message = "Do you want to save receipts in our server?";
       $cordovaDialogs.confirm(message, 'Safely store your Receipts', ['Send to server', 'Use locally'])
         .then(function (buttonIndex) {
           // no button = 0, 'OK' = 1, 'Cancel' = 2
           if (buttonIndex == 1) {
+            if ($window.sessionStorage.token == undefined) {
+              DefService.messagesMaker("You must be logged in");
+            } else {
+              $scope.addReceiptsToServer();
+              $scope.receiptsImagesList = [];
+            }
+          } else if (buttonIndex == 2) {
 
-
-
-            $scope.receiptsImagesList = [];
-          } else if(buttonIndex == 2){
+            $scope.addReceiptsLocaly();
             $scope.receiptsImagesList = [];
           }
         });
-    }
-
-
-    var getFilesHelper = function (file) {
-      show();
-      PhotosAndFilesService.readFiles(file, $scope).then(function (selectedImages) {
-
-        $scope.receiptsImagesList.push(selectedImages);
-        hide();
-      }, function (err) {
-        hide();
-        messagesMaker('Error!!');
-
-      });
-    };
-
-
-    var resizeImages = function (image) {
-      var resizedImage = new Image();
-      resizedImage.src = image;
-      //var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
-      //return { width: srcWidth*ratio, height: srcHeight*ratio };
-
-      resizedImage.width = 6;
-      resizedImage.height = 6;
-      messagesMaker(resizedImage.height);
-      messagesMaker(resizedImage.width);
-      return resizedImage.src;
-    };
-
-
-    var show = function () {
-      $ionicLoading.show({
-        template: '<ion-spinner class="spinner-energized"></ion-spinner>'
-
-
-      });
-    };
-    var hide = function () {
-      $ionicLoading.hide();
     };
 
 
     $scope.signInOut = function () {
-      if($window.sessionStorage.token != null) {
-        delete $window.sessionStorage.token;
-
-        $state.go('start');
-      } else {
-        $state.go('signin');
-      }
+      DefService.signInOut();
     };
 
-    var messagesMaker = function (message) {
-      try {
-        $cordovaToast
-          .show(message, 'long', 'bottom')
-          .then(function (success) {
-            // success
-          }, function (error) {
-
-          });
-      } catch (ex) {
-        $window.alert(message);
-      }
+    $scope.goHome = function () {
+      DefService.goTo('start');
     };
+
+    var getFilesHelper = function (file) {
+      DefService.show();
+      PhotosAndFilesService.readFiles(file, $scope).then(function (selectedImages) {
+
+        $scope.receiptsImagesList.push(selectedImages);
+        DefService.hide();
+      }, function (error) {
+        DefService.hide();
+        console.log(error);
+
+      });
+    };
+
+
   });

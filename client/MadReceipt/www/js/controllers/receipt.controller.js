@@ -1,93 +1,49 @@
 angular.module('receipt.controllers', [])
-  .controller('ReceiptCtrl', function ($scope, $state, $window, $stateParams, $cordovaToast, $ionicLoading, DatabaseService, ReceiptsServer) {
-    //$scope.chat = Chats.get($stateParams.chatId);
+  .controller('ReceiptCtrl', function ($scope, $state, $window, $stateParams, DatabaseService, DefService) {
+
     $scope.$on('$ionicView.enter', function () {
-      $scope.receipt=[];
-      show();
+      $scope.receipt = [];
+      DefService.show();
 
       try {
         DatabaseService.select($stateParams.receiptId).then(function (receipt) {
 
-          hide();
+          DefService.hide();
           $scope.receipt = receipt;
 
-        }, function (err) {
-          hide();
-          messagesMaker('Error!!');
+        }, function (error) {
+          DefService.hide();
+          console.log(error);
 
         });
       } catch (ex) {
-        hide();
-        $scope.errorMessage ="Unfortunately some browsers or devices do not support saving receipts locally:(";
+        DefService.hide();
+        $scope.errorMessage = "Unfortunately some browsers or devices do not support saving receipts locally:(";
       }
     });
 
 
-
-    $scope.removeReceipt = function(receiptId){
+    $scope.removeReceipt = function (receiptId) {
       DatabaseService.remove(receiptId).then(function () {
         $state.go('tab.receiptsList');
 
-      }, function (err) {
-        messagesMaker('Error!!');
-
-      });
-    };
-
-    $scope.readReceipt = function(receiptId, receiptImage){
-      console.log(receiptImage);
-      alert(receiptImage);
-      ReceiptsServer.useOCR(receiptImage).then(function (response) {
-        messagesMaker(response.data.message);
-
-       /* if (response.data != '"Login or password is incorrect."') {
-
-          alert(response.data.token);
-          $window.sessionStorage.token = response.data.token;
-          $state.go('tab.newReceipt');
-
-        } else {
-          messagesMaker(response.data);
-        }*/
       }, function (error) {
+        console.log(error);
 
-        messagesMaker("Error!!!");
       });
     };
 
-    $scope.updateReceipt = function(receipt){
+
+    $scope.updateReceipt = function (receipt) {
       DatabaseService.update(receipt).then(function () {
-        messagesMaker("Receipt updated");
+        DefService.messagesMaker("Receipt updated");
+        DefService.goTo('tab.receiptsList');
 
-      }, function (err) {
-        messagesMaker('Error!!');
-
-      });
-    };
-
-    var messagesMaker = function (message) {
-      try {
-        $cordovaToast
-          .show(message, 'long', 'bottom')
-          .then(function (success) {
-            // success
-          }, function (error) {
-
-          });
-      } catch (ex) {
-        $window.alert(message);
-      }
-    };
-
-    var show = function () {
-      $ionicLoading.show({
-        template: '<ion-spinner class="spinner-energized"></ion-spinner>'
-
+      }, function (error) {
+        console.log(error);
 
       });
     };
-    var hide = function () {
-      $ionicLoading.hide();
-    };
+
 
   });
