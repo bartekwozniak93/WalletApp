@@ -6,6 +6,7 @@ var receiptController = require('./controllers/receipt');
 var userController = require('./controllers/user');
 var passport = require('passport');
 var authController = require('./controllers/auth');
+
 var config = require('./config');
 var express = require('express')
     , cors = require('cors')
@@ -44,7 +45,7 @@ router.route('/receipts/:receipt_id')
    // .post(authController.isJWTAuthenticated, receiptController.postAtt);
 
 router.route('/local/users')
-    .post(userController.postUsers, authController.generateToken)
+    .post(userController.postUsers, authController.generateToken);
 //.get(authController.isJWTAuthenticated, userController.getUsers);
 
 router.route('/local/user')

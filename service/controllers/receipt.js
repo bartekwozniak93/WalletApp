@@ -3,7 +3,9 @@ var ocr=require('../models/ocr').OCR;
 var sync=require('synchronize');
 
 exports.postAtt = function(req, res) {
-	try{
+
+
+    try{
         ocr(req.body.att,function(err,data){
             if(err)
                 res.send(err);
@@ -47,7 +49,7 @@ exports.postAtt = function(req, res) {
 	}catch(err){
 		res.json({message: 'Unable to read att ', error: err});
 	}
-}
+};
 
 /*exports.postReceipts = function(req, res) {
     var receipt = new Receipt();
@@ -78,7 +80,7 @@ exports.getReceipts = function(req, res) {
             allReceipts.push({id:receipts[num]._id, data:receipts[num]});
         res.json(allReceipts);
    });
-}
+};
 
 exports.getReceipt = function(req, res) {
     Receipt.findById(req.params.receipt_id, function(err, receipt) {
@@ -89,7 +91,7 @@ exports.getReceipt = function(req, res) {
         else
             res.json({message: 'Receipt found in the wallet!', data:receipt});
     });
-}
+};
 
 exports.putReceipt = function(req, res) {
     Receipt.findById(req.params.receipt_id, function(err, receipt) {
@@ -113,7 +115,7 @@ exports.putReceipt = function(req, res) {
             });
         }
     });
-}
+};
 
 exports.deleteReceipt = function(req, res) {
     Receipt.findById(req.params.receipt_id, function(err, receipt) {
@@ -124,8 +126,8 @@ exports.deleteReceipt = function(req, res) {
         else{
             receipt.remove(function(err) {
                 if (err) res.send(err);
-                res.json({ message:'User successfully deleted!'});
+                res.json({message: 'Receipt successfully deleted!'});
             });
 	   }
     });
-}
+};
