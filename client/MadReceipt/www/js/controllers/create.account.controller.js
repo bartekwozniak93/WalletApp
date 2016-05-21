@@ -1,5 +1,5 @@
 angular.module('account.controllers', [])
-  .controller('CreateAccountCtrl', function ($scope, $state, $window, $http, $cordovaToast, ReceiptsServer) {
+  .controller('CreateAccountCtrl', function ($scope, $window, ReceiptsServer, DefService) {
 
     $scope.signUp = function (email, password, password_confirmed) {
 
@@ -7,11 +7,11 @@ angular.module('account.controllers', [])
       if (invalidPasswordMessage != '') {
 
 
-        messagesMaker(invalidPasswordMessage);
+        DefService.messagesMaker(invalidPasswordMessage);
       } else {
         if (password != password_confirmed) {
 
-          messagesMaker("Passwords are not the same");
+          DefService.messagesMaker("Passwords are not the same");
 
         } else {
 
@@ -19,16 +19,16 @@ angular.module('account.controllers', [])
 
             if (response.data != '"That email is already taken."') {
 
-              messagesMaker('Account is created');
+              DefService.messagesMaker('Account is created');
               $window.sessionStorage.token = response.data.token;
-              $state.go('tab.newReceipt');
+              DefService.goTo('tab.newReceipt');
 
             } else {
-              messagesMaker(response.data);
+              DefService.messagesMaker(response.data);
             }
           }, function (error) {
 
-            messagesMaker("Error!!!");
+            console.log(error);
           });
 
 
@@ -56,20 +56,6 @@ angular.module('account.controllers', [])
       return invalidPasswordMessage;
 
     };
-
-    var messagesMaker = function (message) {
-      try {
-        $cordovaToast
-          .show(message, 'long', 'bottom')
-          .then(function (success) {
-            // success
-          }, function (error) {
-
-          });
-      } catch (ex) {
-        $window.alert(message);
-      }
-    }
 
 
   })

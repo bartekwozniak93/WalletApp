@@ -1,44 +1,29 @@
 angular.module('receiptsList.controllers', [])
-  .controller('ReceiptsListCtrl', function ($scope, $window, $state, $http, $cordovaToast, $ionicLoading, DatabaseService) {
+  .controller('ReceiptsListCtrl', function ($scope, $window, $state, $http, $cordovaToast, $ionicLoading, DatabaseService, DefService) {
 
     $scope.$on('$ionicView.enter', function () {
       $scope.receipts = [];
       $scope.getReceipts();
     });
 
-    $scope.filterBySelectedValue= function(selectedFilter) {
-
-      switch(selectedFilter) {
-        case "None":
-          alert("none");
-          $scope.filter = "";
-          break;
-        case "Category":
-          alert("category");
-          $scope.filter = $scope.receipt.category;
-          break;
-        default:
-          $scope.filter = "";
-      }
-    };
 
     $scope.getReceipts = function () {
       $scope.receiptsNo = 0;
-      show();
+      DefService.show();
       try {
         DatabaseService.selectAll().then(function (receiptsList) {
 
-          hide();
+          DefService.hide();
           $scope.receipts = receiptsList;
           $scope.receiptsNo = receiptsList.length;
 
-        }, function (err) {
-          hide();
-          messagesMaker('Error!!');
+        }, function (error) {
+          DefService.hide();
+          console.log(error);
 
         });
       } catch (ex) {
-        hide();
+        DefService.hide();
         $scope.errorMessage ="Unfortunately some browsers or devices do not support saving receipts locally:(";
       }
 
@@ -47,11 +32,10 @@ angular.module('receiptsList.controllers', [])
 
     $scope.uploadReceipts = function () {
       if ($window.sessionStorage.token != undefined) {
-        $scope.goTo('tab.receipt-upload');
+        DefService.goTo('tab.receipt-upload');
       } else {
-        messagesMaker("You must be logged in to send receipts");
-        $scope.goTo('signin');
-        //TODO: Okno z wybraniem metody logowania
+        DefService.messagesMaker("You must be logged in to send receipts");
+        DefService.goTo('signin');
       }
 
     };
@@ -63,51 +47,18 @@ angular.module('receiptsList.controllers', [])
 
         $scope.getReceipts();
 
-      }, function (err) {
-        messagesMaker('Error!!');
+      }, function (error) {
+        console.log(error);
 
       });
     };
 
     $scope.signInOut = function () {
-      if($window.sessionStorage.token != null) {
-        delete $window.sessionStorage.token;
-
-        $state.go('start');
-      } else {
-        $state.go('signin');
-      }
+      DefService.signInOut();
     };
 
-    var messagesMaker = function (message) {
-      try {
-        $cordovaToast
-          .show(message, 'long', 'bottom')
-          .then(function (success) {
-            // success
-          }, function (error) {
-
-          });
-      } catch (ex) {
-        $window.alert(message);
-      }
+    $scope.goHome = function () {
+      DefService.goTo('start');
     };
-
-    var show = function () {
-      $ionicLoading.show({
-        template: '<ion-spinner class="spinner-energized"></ion-spinner>'
-
-
-      });
-    };
-    var hide = function () {
-      $ionicLoading.hide();
-    };
-
-    $scope.goTo = function (destinationPage) {
-
-      $state.go(destinationPage);
-    };
-
 
   });

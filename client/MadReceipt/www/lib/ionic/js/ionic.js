@@ -2,7 +2,7 @@
  * Copyright 2015 Drifty Co.
  * http://drifty.com/
  *
- * Ionic, v1.2.4
+ * Ionic, v1.3.1
  * A powerful HTML5 mobile app framework.
  * http://ionicframework.com/
  *
@@ -18,7 +18,7 @@
 // build processes may have already created an ionic obj
 window.ionic = window.ionic || {};
 window.ionic.views = {};
-window.ionic.version = '1.2.4';
+  window.ionic.version = '1.3.1';
 
 (function (ionic) {
 
@@ -170,7 +170,9 @@ window.ionic.version = '1.2.4';
      * @ngdoc method
      * @name ionic.DomUtil#requestAnimationFrame
      * @alias ionic.requestAnimationFrame
-     * @description Calls [requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window.requestAnimationFrame), or a polyfill if not available.
+     * @description Calls
+     *     [requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/window.requestAnimationFrame), or a
+     *     polyfill if not available.
      * @param {function} callback The function to call when the next frame
      * happens.
      */
@@ -573,7 +575,7 @@ window.ionic.version = '1.2.4';
      *
      * `hold`, `tap`, `doubletap`, `drag`, `dragstart`, `dragend`, `dragup`, `dragdown`, <br/>
      * `dragleft`, `dragright`, `swipe`, `swipeup`, `swipedown`, `swipeleft`, `swiperight`, <br/>
-     * `transform`, `transformstart`, `transformend`, `rotate`, `pinch`, `pinchin`, `pinchout`, </br>
+     * `transform`, `transformstart`, `transformend`, `rotate`, `pinch`, `pinchin`, `pinchout`, <br/>
      * `touch`, `release`
      *
      * @param {string} eventType The gesture event to listen for.
@@ -610,7 +612,9 @@ window.ionic.version = '1.2.4';
   // Map some convenient top-level functions for event handling
   ionic.on = function() { ionic.EventController.on.apply(ionic.EventController, arguments); };
   ionic.off = function() { ionic.EventController.off.apply(ionic.EventController, arguments); };
-  ionic.trigger = ionic.EventController.trigger;//function() { ionic.EventController.trigger.apply(ionic.EventController.trigger, arguments); };
+  ionic.trigger = ionic.EventController.trigger;//function() {
+                                                // ionic.EventController.trigger.apply(ionic.EventController.trigger,
+                                                // arguments); };
   ionic.onGesture = function() { return ionic.EventController.onGesture.apply(ionic.EventController.onGesture, arguments); };
   ionic.offGesture = function() { return ionic.EventController.offGesture.apply(ionic.EventController.offGesture, arguments); };
 
@@ -1533,7 +1537,6 @@ window.ionic.version = '1.2.4';
    *     inst.trigger(this.name, ev);
    *   }
    * }
-
    * @param   {String}    name
    * this should be the name of the gesture, lowercase
    * it is also being used to disable/enable the gesture per instance config.
@@ -1565,15 +1568,12 @@ window.ionic.version = '1.2.4';
    *          velocityX   {Number}        the velocity on the x
    *          velocityY   {Number}        the velocity on y
    *          angle       {Number}        the angle we are moving
-   *          direction   {String}        the direction we are moving. matches ionic.Gestures.DIRECTION_UP|DOWN|LEFT|RIGHT
-   *          distance    {Number}        the distance we haved moved
-   *          scale       {Number}        scaling of the touches, needs 2 touches
-   *          rotation    {Number}        rotation of the touches, needs 2 touches *
-   *          eventType   {String}        matches ionic.Gestures.EVENT_START|MOVE|END
-   *          srcEvent    {Object}        the source event, like TouchStart or MouseDown *
-   *          startEvent  {Object}        contains the same properties as above,
-   *                                      but from the first touch. this is used to calculate
-   *                                      distances, deltaTime, scaling etc
+   *          direction   {String}        the direction we are moving. matches
+   *     ionic.Gestures.DIRECTION_UP|DOWN|LEFT|RIGHT distance    {Number}        the distance we haved moved scale
+   *      {Number}        scaling of the touches, needs 2 touches rotation    {Number}        rotation of the touches,
+   *     needs 2 touches * eventType   {String}        matches ionic.Gestures.EVENT_START|MOVE|END srcEvent    {Object}
+   *            the source event, like TouchStart or MouseDown * startEvent  {Object}        contains the same
+   *     properties as above, but from the first touch. this is used to calculate distances, deltaTime, scaling etc
    *
    *      @param  {ionic.Gestures.Instance}    inst
    *      the instance we are doing the detection for. you can get the options from
@@ -1827,9 +1827,9 @@ window.ionic.version = '1.2.4';
           if(ionic.Gestures.detection.current.name != this.name) {
             ionic.Gestures.detection.current.name = this.name;
             if (inst.options.correct_for_drag_min_distance) {
-              // When a drag is triggered, set the event center to drag_min_distance pixels from the original event center.
-              // Without this correction, the dragged distance would jumpstart at drag_min_distance pixels instead of at 0.
-              // It might be useful to save the original start point somewhere
+              // When a drag is triggered, set the event center to drag_min_distance pixels from the original event
+              // center. Without this correction, the dragged distance would jumpstart at drag_min_distance pixels
+              // instead of at 0. It might be useful to save the original start point somewhere
               var factor = Math.abs(inst.options.drag_min_distance / ev.distance);
               ionic.Gestures.detection.current.startEvent.center.pageX += ev.deltaX * factor;
               ionic.Gestures.detection.current.startEvent.center.pageY += ev.deltaY * factor;
@@ -2106,6 +2106,11 @@ window.ionic.version = '1.2.4';
      * @returns {string} What grade the current platform is.
      */
     grade: null,
+    /**
+     * @ngdoc property
+     * @name ionic.Platform#ua
+     * @returns {string} What User Agent is.
+     */
     ua: navigator.userAgent,
 
     /**
@@ -2184,7 +2189,7 @@ window.ionic.version = '1.2.4';
         self.platforms.push('webview');
         if (!(!window.cordova && !window.PhoneGap && !window.phonegap)) {
           self.platforms.push('cordova');
-        } else if (window.forge) {
+        } else if (typeof window.forge === 'object') {
           self.platforms.push('trigger');
         }
       } else {
@@ -2224,7 +2229,7 @@ window.ionic.version = '1.2.4';
      * @returns {boolean} Check if we are running within a WebView (such as Cordova).
      */
     isWebView: function() {
-      return !(!window.cordova && !window.PhoneGap && !window.phonegap && !window.forge);
+      return !(!window.cordova && !window.PhoneGap && !window.phonegap && window.forge !== 'object');
     },
     /**
      * @ngdoc method
@@ -2385,7 +2390,8 @@ window.ionic.version = '1.2.4';
     /**
      * @ngdoc method
      * @name ionic.Platform#showStatusBar
-     * @description Shows or hides the device status bar (in Cordova). Requires `cordova plugin add org.apache.cordova.statusbar`
+     * @description Shows or hides the device status bar (in Cordova). Requires `cordova plugin add
+     *     org.apache.cordova.statusbar`
      * @param {boolean} shouldShow Whether or not to show the status bar.
      */
     showStatusBar: function(val) {
@@ -2412,7 +2418,8 @@ window.ionic.version = '1.2.4';
      * @name ionic.Platform#fullScreen
      * @description
      * Sets whether the app is fullscreen or not (in Cordova).
-     * @param {boolean=} showFullScreen Whether or not to set the app to fullscreen. Defaults to true. Requires `cordova plugin add org.apache.cordova.statusbar`
+     * @param {boolean=} showFullScreen Whether or not to set the app to fullscreen. Defaults to true. Requires
+     *     `cordova plugin add org.apache.cordova.statusbar`
      * @param {boolean=} showStatusBar Whether or not to show the device's status bar. Defaults to false.
      */
     fullScreen: function(showFullScreen, showStatusBar) {
@@ -2765,7 +2772,8 @@ ionic.tap = {
            (/^(file|range)$/i).test(e.target.type) ||
            (e.target.dataset ? e.target.dataset.preventScroll : e.target.getAttribute('data-prevent-scroll')) == 'true' || // manually set within an elements attributes
            (!!(/^(object|embed)$/i).test(e.target.tagName)) ||  // flash/movie/object touches should not try to scroll
-           ionic.tap.isElementTapDisabled(e.target); // check if this element, or an ancestor, has `data-tap-disabled` attribute
+      ionic.tap.isElementTapDisabled(e.target); // check if this element, or an ancestor, has `data-tap-disabled`
+                                                // attribute
   },
 
   isTextInput: function(ele) {
@@ -2872,7 +2880,7 @@ ionic.tap = {
     if (ele && ele.nodeType === 1) {
       var element = ele;
       while (element) {
-        if ((element.dataset ? element.dataset.tapDisabled : element.getAttribute && element.getAttribute('data-tap-disabled')) == 'true') {
+        if (element.getAttribute && element.getAttribute('data-tap-disabled') == 'true') {
           return true;
         }
         element = element.parentElement;
@@ -3264,7 +3272,7 @@ ionic.DomUtil.ready(function() {
             eleToActivate = ele;
             break;
           }
-          if (ele.classList.contains('button')) {
+          if (ele.classList && ele.classList.contains('button')) {
             eleToActivate = ele;
             break;
           }
@@ -3576,9 +3584,9 @@ ionic.DomUtil.ready(function() {
  * </div>
  * ```
  *
- * Note: For performance reasons, elements will not be hidden for 400ms after the start of the `native.keyboardshow` event
- * from the Ionic Keyboard plugin. If you would like them to disappear immediately, you could do something
- * like:
+ * Note: For performance reasons, elements will not be hidden for 400ms after the start of the `native.keyboardshow`
+ *     event from the Ionic Keyboard plugin. If you would like them to disappear immediately, you could do something
+ *     like:
  *
  * ```js
  *   window.addEventListener('native.keyboardshow', function(){
@@ -5891,12 +5899,18 @@ ionic.views.Scroll = ionic.views.View.inherit({
    * the official Twitter client.
    *
    * @param height {Integer} Height of pull-to-refresh zone on top of rendered list
-   * @param activateCallback {Function} Callback to execute on activation. This is for signalling the user about a refresh is about to happen when he release.
-   * @param deactivateCallback {Function} Callback to execute on deactivation. This is for signalling the user about the refresh being cancelled.
-   * @param startCallback {Function} Callback to execute to start the real async refresh action. Call {@link #finishPullToRefresh} after finish of refresh.
-   * @param showCallback {Function} Callback to execute when the refresher should be shown. This is for showing the refresher during a negative scrollTop.
-   * @param hideCallback {Function} Callback to execute when the refresher should be hidden. This is for hiding the refresher when it's behind the nav bar.
-   * @param tailCallback {Function} Callback to execute just before the refresher returns to it's original state. This is for zooming out the refresher.
+   * @param activateCallback {Function} Callback to execute on activation. This is for signalling the user about a
+   *     refresh is about to happen when he release.
+   * @param deactivateCallback {Function} Callback to execute on deactivation. This is for signalling the user about
+   *     the refresh being cancelled.
+   * @param startCallback {Function} Callback to execute to start the real async refresh action. Call {@link
+    *     #finishPullToRefresh} after finish of refresh.
+   * @param showCallback {Function} Callback to execute when the refresher should be shown. This is for showing the
+   *     refresher during a negative scrollTop.
+   * @param hideCallback {Function} Callback to execute when the refresher should be hidden. This is for hiding the
+   *     refresher when it's behind the nav bar.
+   * @param tailCallback {Function} Callback to execute just before the refresher returns to it's original state. This
+   *     is for zooming out the refresher.
    * @param pullProgressCallback Callback to state the progress while pulling to refresh
    */
   activatePullToRefresh: function(height, refresherMethods) {
@@ -5919,7 +5933,8 @@ ionic.views.Scroll = ionic.views.View.inherit({
    */
   triggerPullToRefresh: function() {
     // Use publish instead of scrollTo to allow scrolling to out of boundary position
-    // We don't need to normalize scrollLeft, zoomLevel, etc. here because we only y-scrolling when pull-to-refresh is enabled
+    // We don't need to normalize scrollLeft, zoomLevel, etc. here because we only y-scrolling when pull-to-refresh is
+    // enabled
     this.__publish(this.__scrollLeft, -this.__refreshHeight, this.__zoomLevel, true);
 
     var d = new Date();
@@ -6558,7 +6573,8 @@ ionic.views.Scroll = ionic.views.View.inherit({
       if (self.__refreshActive && self.__refreshStart) {
 
         // Use publish instead of scrollTo to allow scrolling to out of boundary position
-        // We don't need to normalize scrollLeft, zoomLevel, etc. here because we only y-scrolling when pull-to-refresh is enabled
+        // We don't need to normalize scrollLeft, zoomLevel, etc. here because we only y-scrolling when pull-to-refresh
+        // is enabled
         self.__publish(self.__scrollLeft, -self.__refreshHeight, self.__zoomLevel, true);
 
         var d = new Date();
@@ -6745,8 +6761,8 @@ ionic.views.Scroll = ionic.views.View.inherit({
       var clientWidth = self.__clientWidth;
       var clientHeight = self.__clientHeight;
 
-      // We limit deceleration not to the min/max values of the allowed range, but to the size of the visible client area.
-      // Each page should have exactly the size of the client area.
+      // We limit deceleration not to the min/max values of the allowed range, but to the size of the visible client
+      // area. Each page should have exactly the size of the client area.
       self.__minDecelerationScrollLeft = Math.floor(scrollLeft / clientWidth) * clientWidth;
       self.__minDecelerationScrollTop = Math.floor(scrollTop / clientHeight) * clientHeight;
       self.__maxDecelerationScrollLeft = Math.ceil(scrollLeft / clientWidth) * clientWidth;
@@ -7365,7 +7381,8 @@ ionic.scroll = {
               // D - A or B - A if D > B       D - A             max(0, D - B)
               scrollViewOffsetHeight = Math.max(0, Math.min(self.__originalContainerHeight, self.__originalContainerHeight - (e.detail.keyboardHeight - 43)));//keyboardOffset >= 0 ? scrollViewOffsetHeight - keyboardOffset : scrollViewOffsetHeight + keyboardOffset;
 
-              //console.log('Old container height', self.__originalContainerHeight, 'New container height', scrollViewOffsetHeight, 'Keyboard height', e.detail.keyboardHeight);
+              //console.log('Old container height', self.__originalContainerHeight, 'New container height',
+              // scrollViewOffsetHeight, 'Keyboard height', e.detail.keyboardHeight);
 
               container.style.height = scrollViewOffsetHeight + "px";
 
@@ -7493,11 +7510,18 @@ ionic.scroll = {
       };
 
       self.handleTouchMove = function(e) {
-        if(self.__frozenShut) {
+        if (self.__frozenShut) {
           e.preventDefault();
           e.stopPropagation();
           return false;
+
+        } else if (self.__frozen) {
+          e.preventDefault();
+          // let it propagate so other events such as drag events can happen,
+          // but don't let it actually scroll
+          return false;
         }
+        return true;
       };
 
       container.addEventListener('scroll', self.onScroll);
@@ -8445,7 +8469,8 @@ ionic.views.Slider = ionic.views.View.inherit({
         move(index, width * direction, slideSpeed || speed);
         move(to, 0, slideSpeed || speed);
 
-        if (options.continuous) move(circle(to - direction), -(width * direction), 0); // we need to get the next in place
+        if (options.continuous) move(circle(to - direction), -(width * direction), 0); // we need to get the next in
+                                                                                       // place
 
       } else {
 
@@ -8668,7 +8693,8 @@ ionic.views.Slider = ionic.views.View.inherit({
                  delta.x = Math.min(delta.x, width * index);  //Set delta.x so we don't go past left screen
                }
                if(Math.abs(delta.x) > width * (slides.length - index - 1)){         //We are trying to scroll past right bondary
-                 delta.x = Math.max( -width * (slides.length - index - 1), delta.x);  //Set delta.x so we don't go past right screen
+                 delta.x = Math.max(-width * (slides.length - index - 1), delta.x);  //Set delta.x so we don't go past
+                                                                                     // right screen
                }
              }
 
@@ -10737,6 +10763,11 @@ ionic.views.Slider = ionic.views.View.inherit({
                 s.emit('onTransitionStart', s);
                 if (s.activeIndex !== s.previousIndex) {
                     s.emit('onSlideChangeStart', s);
+                  _scope.$emit("$ionicSlides.slideChangeStart", {
+                    slider: s,
+                    activeIndex: s.getSlideDataIndex(s.activeIndex),
+                    previousIndex: s.getSlideDataIndex(s.previousIndex)
+                  });
                     if (s.activeIndex > s.previousIndex) {
                         s.emit('onSlideNextStart', s);
                     }
@@ -10756,6 +10787,11 @@ ionic.views.Slider = ionic.views.View.inherit({
                 s.emit('onTransitionEnd', s);
                 if (s.activeIndex !== s.previousIndex) {
                     s.emit('onSlideChangeEnd', s);
+                  _scope.$emit("$ionicSlides.slideChangeEnd", {
+                    slider: s,
+                    activeIndex: s.getSlideDataIndex(s.activeIndex),
+                    previousIndex: s.getSlideDataIndex(s.previousIndex)
+                  });
                     if (s.activeIndex > s.previousIndex) {
                         s.emit('onSlideNextEnd', s);
                     }
@@ -10970,14 +11006,49 @@ ionic.views.Slider = ionic.views.View.inherit({
             }
             s.observers = [];
         };
+
+      s.updateLoop = function () {
+        var currentSlide = s.slides.eq(s.activeIndex);
+        if (angular.element(currentSlide).hasClass(s.params.slideDuplicateClass)) {
+          // we're on a duplicate, so slide to the non-duplicate
+          var swiperSlideIndex = angular.element(currentSlide).attr("data-swiper-slide-index");
+          var slides = s.wrapper.children('.' + s.params.slideClass);
+          for (var i = 0; i < slides.length; i++) {
+            if (!angular.element(slides[i]).hasClass(s.params.slideDuplicateClass) && angular.element(slides[i]).attr("data-swiper-slide-index") === swiperSlideIndex) {
+              s.slideTo(i, 0, false, true);
+              break;
+            }
+          }
+          // if we needed to switch slides, we did that.  So, now call the createLoop function internally
+          setTimeout(function () {
+            s.createLoop();
+          }, 50);
+        }
+      }
+
+      s.getSlideDataIndex = function (slideIndex) {
+        // this is an Ionic custom function
+        // Swiper loops utilize duplicate DOM elements for slides when in a loop
+        // which means that we cannot rely on the actual slide index for our events
+        // because index 0 does not necessarily point to index 0
+        // and index n+1 does not necessarily point to the expected piece of data
+        // therefore, rather than using the actual slide index we should
+        // use the data index that swiper includes as an attribute on the dom elements
+        // because this is what will be meaningful to the consumer of our events
+        var slide = s.slides.eq(slideIndex);
+        var attributeIndex = angular.element(slide).attr("data-swiper-slide-index");
+        return parseInt(attributeIndex);
+      }
+
         /*=========================
           Loop
           ===========================*/
         // Create looped slides
         s.createLoop = function () {
-
-            var toRemove = s.wrapper.children('.' + s.params.slideClass + '.' + s.params.slideDuplicateClass);
-            angular.element(toRemove).remove();
+          //console.log("Slider create loop method");
+          //var toRemove = s.wrapper.children('.' + s.params.slideClass + '.' + s.params.slideDuplicateClass);
+          //angular.element(toRemove).remove();
+          s.wrapper.children('.' + s.params.slideClass + '.' + s.params.slideDuplicateClass).remove();
 
             var slides = s.wrapper.children('.' + s.params.slideClass);
 
@@ -10997,16 +11068,17 @@ ionic.views.Slider = ionic.views.View.inherit({
                 slide.attr('data-swiper-slide-index', index);
             });
             for (i = 0; i < appendSlides.length; i++) {
+
               newNode = angular.element(appendSlides[i]).clone().addClass(s.params.slideDuplicateClass);
               newNode.removeAttr('ng-transclude');
               newNode.removeAttr('ng-repeat');
               scope = angular.element(appendSlides[i]).scope();
               newNode = $compile(newNode)(scope);
               angular.element(s.wrapper).append(newNode);
-                //s.wrapper.append($(appendSlides[i].cloneNode(true)).addClass(s.params.slideDuplicateClass));
+              //s.wrapper.append($(appendSlides[i].cloneNode(true)).addClass(s.params.slideDuplicateClass));
             }
             for (i = prependSlides.length - 1; i >= 0; i--) {
-                //s.wrapper.prepend($(prependSlides[i].cloneNode(true)).addClass(s.params.slideDuplicateClass));
+              //s.wrapper.prepend($(prependSlides[i].cloneNode(true)).addClass(s.params.slideDuplicateClass));
 
               newNode = angular.element(prependSlides[i]).clone().addClass(s.params.slideDuplicateClass);
               newNode.removeAttr('ng-transclude');

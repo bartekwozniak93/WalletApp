@@ -10,7 +10,6 @@ angular.module('database.services', ['ionic', 'ngCordova'])
         receiptsDB = window.sqlitePlugin.openDatabase({"name": "MadReceipts.db", iosDatabaseLocation: 'default'}); //device
                                                                                                                    // -
                                                                                                                    // SQLite
-          // alert("device db (SQLite) loaded");
       } else {
 
         receiptsDB = window.openDatabase("APSNetMobileDb", "1.0", "MadReceipts.db", 100 * 1024 * 1024); // browser
@@ -18,7 +17,6 @@ angular.module('database.services', ['ionic', 'ngCordova'])
                                                                                                         // fall-back
                                                                                                         // for
                                                                                                         // debugging
-        //alert("browser db (WebSQL) loaded");
       }
 
       receiptsDB.transaction(createReceiptsTable, errorCB, successCB);

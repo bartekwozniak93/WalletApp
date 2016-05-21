@@ -1,5 +1,5 @@
 angular.module('statistics.controllers', [])
-  .controller('StatisticsCtrl', function ($scope, $window, $state, $cordovaToast, $ionicLoading, DatabaseService) {
+  .controller('StatisticsCtrl', function ($scope, $window, DatabaseService, DefService) {
 
     $scope.$on('$ionicView.enter', function () {
 
@@ -12,7 +12,7 @@ angular.module('statistics.controllers', [])
 
 
     var createDataForCategoryChart = function(){
-      show();
+      DefService.show();
       try {
         DatabaseService.selectAll().then(function (receiptsList) {
 
@@ -20,21 +20,41 @@ angular.module('statistics.controllers', [])
           var dateList = [];
           var receiptsNoByCategory = [];
           var receiptsTotalByDate = [];
+          var receiptsTotalByCompany = [];
           var totalSum = 0;
+          var companyList = [];
 
           $scope.receiptsNo = receiptsList.length;
+
           for(var i=0; i<receiptsList.length;i++){
 
-            dateList.push(receiptsList[i]._date);
-            receiptsTotalByDate.push(receiptsList[i].total);
+            /*if(dateList[receiptsList[i].dateReceipt] != undefined) {
+             dateList[receiptsList[i].dateReceipt] = dateList[receiptsList[i].dateReceipt] + receiptsList[i].price;
+             } else{
+             dateList[receiptsList[i].dateReceipt] = receiptsList[i].price;
+             }*/
+            dateList.push(receiptsList[i].dateReceipt);
 
-            totalSum = totalSum + receiptsList[i].total;
+            companyList.push(receiptsList[i].companyName);
+
+
+            totalSum = totalSum + receiptsList[i].price;
 
             if(categoriesList.indexOf(receiptsList[i].category) == -1) {
               categoriesList.push(receiptsList[i].category);
             }
           }
 
+          dateList = unique(dateList);
+          companyList = unique(companyList);
+
+          for (var i = 0; i < dateList.length; i++) {
+            receiptsTotalByDate[i] = (parseFloat(countPriceInDate(dateList[i], receiptsList)));
+          }
+
+          for (var i = 0; i < companyList.length; i++) {
+            receiptsTotalByCompany[i] = (parseFloat(countPriceInCompany(companyList[i], receiptsList)));
+          }
 
           for(var i=0; i<categoriesList.length;i++){
             receiptsNoByCategory[i] = (parseInt(countReceiptsInCategory(categoriesList[i],receiptsList)));
@@ -51,17 +71,28 @@ angular.module('statistics.controllers', [])
           receiptsTotalByDateWrapper.push(receiptsTotalByDate);
           $scope.receiptsTotalByDate = receiptsTotalByDateWrapper;
 
+          $scope.companies = companyList;
+          var receiptsTotalByCompanyWrapper = [];
+          receiptsTotalByCompanyWrapper.push(receiptsTotalByCompany);
+          $scope.receiptsTotalByCompany = receiptsTotalByCompanyWrapper;
+
+
+          console.log($scope.categories);
+          console.log(receiptsTotalByDate);
+          console.log(dateList);
+          console.log($scope.receiptsTotalByDate);
+
           $scope.totalSum = totalSum;
 
-          hide();
+          DefService.hide();
 
         }, function (err) {
-          hide();
-          messagesMaker('Error!!');
+          DefService.hide();
+          console.log(error);
 
         });
       } catch (ex) {
-        hide();
+        DefService.hide();
         $scope.errorMessage ="Unfortunately some browsers or devices do not support saving receipts locally:(";
       }
     };
@@ -76,8 +107,54 @@ angular.module('statistics.controllers', [])
       return numberOfReceipts;
     };
 
+    var countPriceInDate = function (dateReceipt, receiptsList) {
+      var sum = 0;
+      for (var i = 0; i < receiptsList.length; i++) {
+        if (receiptsList[i].dateReceipt == dateReceipt) {
+          sum = sum + receiptsList[i].price;
+        }
+      }
+      return sum;
+    };
+
+    var countPriceInCompany = function (companyName, receiptsList) {
+      var sum = 0;
+      for (var i = 0; i < receiptsList.length; i++) {
+        if (receiptsList[i].companyName == companyName) {
+          sum = sum + receiptsList[i].price;
+        }
+      }
+      return sum;
+    };
+
+    var unique = function (origArr) {
+      var newArr = [],
+        origLen = origArr.length,
+        found, x, y;
+
+      for (x = 0; x < origLen; x++) {
+        found = undefined;
+        for (y = 0; y < newArr.length; y++) {
+          if (origArr[x] === newArr[y]) {
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          newArr.push(origArr[x]);
+        }
+      }
+      return newArr;
+    };
 
 
+    $scope.signInOut = function () {
+      DefService.signInOut();
+    };
+
+    $scope.goHome = function () {
+      DefService.goTo('start');
+    };
     /*
      $scope.getReceiptsFromServer = function () {
      $scope.connectionMessage ='';
@@ -118,42 +195,6 @@ angular.module('statistics.controllers', [])
 
      */
 
-
-    var show = function () {
-      $ionicLoading.show({
-        template: '<ion-spinner class="spinner-energized"></ion-spinner>'
-
-
-      });
-    };
-    var hide = function () {
-      $ionicLoading.hide();
-    };
-
-
-    $scope.signInOut = function () {
-      if ($window.sessionStorage.token != null) {
-        delete $window.sessionStorage.token;
-
-        $state.go('start');
-      } else {
-        $state.go('signin');
-      }
-    };
-
-    var messagesMaker = function (message) {
-      try {
-        $cordovaToast
-          .show(message, 'long', 'bottom')
-          .then(function (success) {
-            // success
-          }, function (error) {
-
-          });
-      } catch (ex) {
-        $window.alert(message);
-      }
-    };
 
 
   });

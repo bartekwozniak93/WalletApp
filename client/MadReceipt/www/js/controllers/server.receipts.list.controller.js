@@ -1,5 +1,5 @@
 angular.module('serverReceiptsList.controllers', [])
-  .controller('ServerReceiptsListCtrl', function ($scope, $window, $state, $http, $cordovaToast, $ionicLoading, ReceiptsServer) {
+  .controller('ServerReceiptsListCtrl', function ($scope, $window, $ionicLoading, ReceiptsServer, DefService) {
 
     $scope.receiptsNo;
 
@@ -9,9 +9,8 @@ angular.module('serverReceiptsList.controllers', [])
     });
 
 
-
     $scope.getReceiptsFromServer = function () {
-      $scope.connectionMessage ='';
+      $scope.connectionMessage = '';
       $scope.receipts = [];
 
 
@@ -22,19 +21,19 @@ angular.module('serverReceiptsList.controllers', [])
 
           var token = 'JWT ' + $window.sessionStorage.token;
 
-          console.log(token);
+          //console.log(token);
 
           ReceiptsServer.selectAllReceipts().then(function (receiptsList) {
 
-            hide();
+            DefService.hide();
             $scope.receipts = receiptsList.data;
             $scope.receiptsNo = receiptsList.data.length;
 
             console.log(receiptsList);
 
-          }, function (err) {
-            hide();
-            messagesMaker('Error!!');
+          }, function (error) {
+            DefService.hide();
+            console.log(error);
 
           });
         }
@@ -52,45 +51,18 @@ angular.module('serverReceiptsList.controllers', [])
     };
 
 
-
     $scope.signInOut = function () {
-      if($window.sessionStorage.token != null) {
-        delete $window.sessionStorage.token;
-
-        $state.go('start');
-      } else {
-        $state.go('signin');
-      }
+      DefService.signInOut();
     };
 
-    var messagesMaker = function (message) {
-      try {
-        $cordovaToast
-          .show(message, 'long', 'bottom')
-          .then(function (success) {
-            // success
-          }, function (error) {
-
-          });
-      } catch (ex) {
-        $window.alert(message);
-      }
+    $scope.goHome = function () {
+      DefService.goTo('start');
     };
 
-    var connectionMessageBuilder = function(message){
-      var messageText = '<div style="align-content: center"><i class="icon ion-chatbubble-working"></i><h2>'+ message +'</h2></div>';
+
+    var connectionMessageBuilder = function (message) {
+      var messageText = '<div style="align-content: center"><i class="icon ion-chatbubble-working"></i><h2>' + message + '</h2></div>';
       $scope.connectionMessage = messageText;
-    }
-
-    var show = function () {
-      $ionicLoading.show({
-        template: '<ion-spinner class="spinner-energized"></ion-spinner>'
-
-
-      });
-    };
-    var hide = function () {
-      $ionicLoading.hide();
     };
 
 

@@ -2,10 +2,10 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc3
+ * v1.0.8
  */
-(function() {
-'use strict';
+(function (window, angular, undefined) {
+  "use strict";
 
 /**
  * @ngdoc module
@@ -17,8 +17,6 @@ angular.module('material.components.divider', [
 ])
   .directive('mdDivider', MdDividerDirective);
 
-function MdDividerController(){}
-
 /**
  * @ngdoc directive
  * @name mdDivider
@@ -26,7 +24,8 @@ function MdDividerController(){}
  * @restrict E
  *
  * @description
- * Dividers group and separate content within lists and page layouts using strong visual and spatial distinctions. This divider is a thin rule, lightweight enough to not distract the user from content.
+ * Dividers group and separate content within lists and page layouts using strong visual and spatial distinctions. This
+ *     divider is a thin rule, lightweight enough to not distract the user from content.
  *
  * @param {boolean=} md-inset Add this attribute to activate the inset divider style.
  * @usage
@@ -40,9 +39,9 @@ function MdDividerController(){}
 function MdDividerDirective($mdTheming) {
   return {
     restrict: 'E',
-    link: $mdTheming,
-    controller: [MdDividerController]
+    link: $mdTheming
   };
 }
 MdDividerDirective.$inject = ["$mdTheming"];
-})();
+
+})(window, window.angular);

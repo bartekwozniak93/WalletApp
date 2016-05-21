@@ -1,8 +1,12 @@
 <ion-view view-title="New Receipts">
+  <ion-nav-buttons side="left">
+    <button class="button icon ion-home" ng-click="goHome()">
+    </button>
+  </ion-nav-buttons>
   <ion-nav-buttons side="right">
-  <button class="button icon ion-log-out" ng-click="signInOut()">
-  Log in / out
-  </button>
+    <button class="button icon ion-log-out" ng-click="signInOut()">
+      Log in / out
+    </button>
   </ion-nav-buttons>
 
   <ion-content class="padding" overflow-scroll="true">
@@ -13,13 +17,13 @@
               ng-click="takePicture()"></button>
       <button class="button button-energized  button-block icon ion-images" id="addReceipts-gallery"
               ng-click="getPicturesFromGallery()"></button>
-      <!-- <button type="file" class="button button-dark  button-block icon ion-android-archive" id="addReceipts-files"
+      <!-- <button type="file" class="button button-dark  button-block icon ion-android-archive" id="addReceiptsLocaly-files"
                ></button>-->
 
 
       <div class="fileUpload btn btn-primary">
         <span>Upload</span>
-        <input type="file" class="upload" onchange="angular.element(this).scope().getFiles(this.files)" multiple />
+        <input type="file" class="upload" onchange="angular.element(this).scope().getFiles(this.files)" multiple/>
       </div>
 
     </div>
@@ -35,8 +39,11 @@
 
     <div style="width: 287px; height: 57px;" class="spacer"></div>
     <div style="" class="button-bar">
-      <button class="button button-stable button-block" id="addReceipts-cancel" ng-click="deleteAllImages()">Cancel</button>
-      <button class="button button-dark  button-block" style="font-weight:bolder;" id="addReceipts-add" ng-click="addReceipts()">Add</button>
+      <button class="button button-stable button-block" id="addReceipts-cancel" ng-click="deleteAllImages()">Cancel
+      </button>
+      <button class="button button-dark  button-block" style="font-weight:bolder;" id="addReceipts-add"
+              ng-click="save()">Add
+      </button>
     </div>
   </ion-content>
 </ion-view>

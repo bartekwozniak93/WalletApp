@@ -1,5 +1,5 @@
 angular.module('sign.in.controllers', [])
-  .controller('SignInCtrl', function ($scope, $state, $window, $http, $cordovaToast, ReceiptsServer) {
+  .controller('SignInCtrl', function ($scope, $window, ReceiptsServer, DefService) {
 
     $scope.signIn = function (email, password) {
 
@@ -8,30 +8,15 @@ angular.module('sign.in.controllers', [])
         if (response.data != '"Login or password is incorrect."') {
 
           $window.sessionStorage.token = response.data.token;
-          $state.go('tab.newReceipt');
+          DefService.goTo('tab.newReceipt');
 
         } else {
-          messagesMaker(response.data);
+          DefService.messagesMaker(response.data);
         }
       }, function (error) {
 
-        messagesMaker("Error!!!");
+        console.log(error);
       });
     };
-
-    var messagesMaker = function (message) {
-      try {
-        $cordovaToast
-          .show(message, 'long', 'bottom')
-          .then(function (success) {
-            // success
-          }, function (error) {
-
-          });
-      } catch (ex) {
-        $window.alert(message);
-      }
-    };
-
 
   });

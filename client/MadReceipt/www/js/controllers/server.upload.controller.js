@@ -1,5 +1,5 @@
 angular.module('serverUpload.controllers', [])
-  .controller('ServerUploadCtrl', function ($scope, $window, $state, $http, $cordovaToast, $ionicLoading, DatabaseService, ReceiptsServer) {
+  .controller('ServerUploadCtrl', function ($scope, $window, DatabaseService, ReceiptsServer, DefService) {
 
     $scope.selectedReceipts = {};
 
@@ -16,9 +16,8 @@ angular.module('serverUpload.controllers', [])
     };
 
     $scope.getOfflineReceipts = function () {
-      console.log("in get offline");
       $scope.receiptsNo = 0;
-      show();
+      DefService.show();
       try {
         DatabaseService.selectAllOffline().then(function (receiptsList) {
 
@@ -31,15 +30,15 @@ angular.module('serverUpload.controllers', [])
           $scope.receiptsNo = receiptsList.length;
 
 
-          hide();
+          DefService.hide();
 
-        }, function (err) {
-          hide();
-          messagesMaker('Error!!');
+        }, function (error) {
+          DefService.hide();
+          console.log(error);
 
         });
       } catch (ex) {
-        hide();
+        DefService.hide();
         $scope.errorMessage = "Unfortunately some browsers or devices do not support saving receipts locally:(";
       }
 
@@ -48,31 +47,30 @@ angular.module('serverUpload.controllers', [])
     $scope.sendToServer = function () {
 
 
-      $scope.goTo('tab.serverReceiptsList');
+      DefService.goTo('tab.serverReceiptsList');
 
       var selectedReceiptsNo = 0;
       var proceedReceipts = 0;
 
 
       angular.forEach($scope.receipts, function (receipt) {
-        show();
+        DefService.show();
         if ($scope.selectedReceipts[receipt._id] == true) {
           try {
             ReceiptsServer.insertReceipt(receipt).then(function () {
-              console.log("send success");
               selectedReceiptsNo = selectedReceiptsNo + 1;
 
               DatabaseService.updateOnlineStatus(receipt._id);
 
 
             }, function (err) {
-              hide();
+              DefService.hide();
               proceedReceipts += 1;
               console.log('Error occured while sending receipt');
 
             });
           } catch (ex) {
-            hide();
+            DefService.hide();
             proceedReceipts += 1;
             $scope.errorMessage = "Unfortunately some browsers or devices do not support saving receipts locally:(";
           }
@@ -82,45 +80,14 @@ angular.module('serverUpload.controllers', [])
 
 
       });
-      hide();
+      DefService.hide();
 
 
     };
 
     $scope.cancelSending = function () {
-      $scope.goTo('tab.receiptsList');
+      DefService.goTo('tab.receiptsList');
 
-    };
-
-
-    var messagesMaker = function (message) {
-      try {
-        $cordovaToast
-          .show(message, 'long', 'bottom')
-          .then(function (success) {
-            // success
-          }, function (error) {
-
-          });
-      } catch (ex) {
-        $window.alert(message);
-      }
-    };
-
-    var show = function () {
-      $ionicLoading.show({
-        template: '<ion-spinner class="spinner-energized"></ion-spinner>'
-
-
-      });
-    };
-    var hide = function () {
-      $ionicLoading.hide();
-    };
-
-    $scope.goTo = function (destinationPage) {
-
-      $state.go(destinationPage);
     };
 
 

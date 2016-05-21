@@ -104,6 +104,25 @@ angular.module('server.services', [])
         }
       });
 
+    };
+
+    serverServices.insertReceiptWithImageOnly = function (receiptImage) {
+      var image = receiptImage.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+
+      var dataToPost = {};
+      dataToPost["att"] = image;
+
+      var auth = 'JWT ' + $window.sessionStorage.token;
+
+      return $http.post("http://localhost:5000/api/receipts", dataToPost, {
+        headers: {
+
+          "Authorization": auth,
+          "X-Powered-By": "Express",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE"
+        }
+      });
 
     };
 
