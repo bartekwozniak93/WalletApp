@@ -1,4 +1,3 @@
-
 // Load required packages
 var express = require('express');
 var mongoose = require('mongoose');
@@ -7,6 +6,7 @@ var receiptController = require('./controllers/receipt');
 var userController = require('./controllers/user');
 var passport = require('passport');
 var authController = require('./controllers/auth');
+
 var config = require('./config');
 var express = require('express')
     , cors = require('cors')
@@ -29,21 +29,23 @@ passport.deserializeUser(function(user, done) {
 
 var router = express.Router();
 
+
+// Create endpoint handlers for /receipts
 router.route('/receipts')
-  .post(authController.isJWTAuthenticated, receiptController.postReceipts)
-  .get(authController.isJWTAuthenticated, receiptController.getReceipts);
+    .post(authController.isJWTAuthenticated, receiptController.postAtt)
+    .get(authController.isJWTAuthenticated, receiptController.getReceipts);
 
-
+// Create endpoint handlers for /receipts/:receipt_id
 router.route('/receipts/:receipt_id')
-    .get(/*authController.isAuthenticated,*/ receiptController.getReceipt)
-    .put(/*authController.isAuthenticated,*/ receiptController.putReceipt)
-    .delete(/*authController.isAuthenticated,*/ receiptController.deleteReceipt);
+    .get(authController.isJWTAuthenticated, receiptController.getReceipt)
+    .put(authController.isJWTAuthenticated, receiptController.putReceipt)
+    .delete(authController.isJWTAuthenticated, receiptController.deleteReceipt);
 
-router.route('/receipts/att')
-    .post(authController.isJWTAuthenticated, receiptController.postAtt);
+//router.route('/receipts/att')
+   // .post(authController.isJWTAuthenticated, receiptController.postAtt);
 
 router.route('/local/users')
-    .post(userController.postUsers, authController.generateToken)
+    .post(userController.postUsers, authController.generateToken);
 //.get(authController.isJWTAuthenticated, userController.getUsers);
 
 router.route('/local/user')

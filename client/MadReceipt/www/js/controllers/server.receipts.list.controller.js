@@ -1,40 +1,40 @@
 angular.module('serverReceiptsList.controllers', [])
-  .controller('ServerReceiptsListCtrl', function ($scope, $window, $state, $http, $cordovaToast) {
+  .controller('ServerReceiptsListCtrl', function ($scope, $window, $ionicLoading, ReceiptsServer, DefService) {
 
-    $scope.$on('$ionicView.enter', function() {
+    $scope.receiptsNo;
+
+    $scope.$on('$ionicView.enter', function () {
       $scope.receipts = [];
       $scope.getReceiptsFromServer();
     });
 
 
     $scope.getReceiptsFromServer = function () {
-      $scope.connectionMessage ='';
+      $scope.connectionMessage = '';
+      $scope.receipts = [];
+
 
       if (window.navigator.onLine) {
-        var token = $window.sessionStorage.token;
-
-        if (token == '') {
+        if ($window.sessionStorage.token == undefined) {
           $scope.connectionMessage = "You're not logged in";
         } else {
 
-          var req = {
-            method: 'GET',
-            url: 'http://localhost:5000/api/receipts',
+          var token = 'JWT ' + $window.sessionStorage.token;
 
-            headers: {'Authorization': token}
-          };
+          //console.log(token);
 
-          $http(req).then(function successCallback(response) {
+          ReceiptsServer.selectAllReceipts().then(function (receiptsList) {
 
-            if (response.data != "Unauthorized") {
+            DefService.hide();
+            $scope.receipts = receiptsList.data;
+            $scope.receiptsNo = receiptsList.data.length;
 
-              $scope.receipts = response.data;
+            console.log(receiptsList);
 
-            } else {
-              $scope.connectionMessage = "Problem with connection to server";
-            }
-          }, function errorCallback(response) {
-            $scope.connectionMessage = "Problem with connection to server";
+          }, function (error) {
+            DefService.hide();
+            console.log(error);
+
           });
         }
       } else {
@@ -43,34 +43,27 @@ angular.module('serverReceiptsList.controllers', [])
 
 
     };
+
+    $scope.getBase64Image = function (imageData) {
+
+      var image = "data:image/png;base64," + imageData;
+      return image;
+    };
+
+
     $scope.signInOut = function () {
-      if($window.sessionStorage.token != null) {
-        delete $window.sessionStorage.token;
-
-        $state.go('start');
-      } else {
-        $state.go('signin');
-      }
+      DefService.signInOut();
     };
 
-    var messagesMaker = function (message) {
-      try {
-        $cordovaToast
-          .show(message, 'long', 'bottom')
-          .then(function (success) {
-            // success
-          }, function (error) {
-
-          });
-      } catch (ex) {
-        $window.alert(message);
-      }
+    $scope.goHome = function () {
+      DefService.goTo('start');
     };
 
-    var connectionMessageBuilder = function(message){
-      var messageText = '<div style="align-content: center"><i class="icon ion-chatbubble-working"></i><h2>'+ message +'</h2></div>';
+
+    var connectionMessageBuilder = function (message) {
+      var messageText = '<div style="align-content: center"><i class="icon ion-chatbubble-working"></i><h2>' + message + '</h2></div>';
       $scope.connectionMessage = messageText;
-    }
+    };
 
 
   });

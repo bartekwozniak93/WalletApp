@@ -10,7 +10,7 @@ var ReceiptSchema   = new mongoose.Schema({
 	nip: String,
 	price: Number,
 	textReceipt: String, 
-	att: Buffer
+	att: String
 });
 
 module.exports = mongoose.model('Receipt', ReceiptSchema);

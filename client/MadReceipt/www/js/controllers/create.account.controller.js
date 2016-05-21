@@ -1,33 +1,34 @@
 angular.module('account.controllers', [])
-  .controller('CreateAccountCtrl', function ($scope, $state, $window, $http, $cordovaToast, ReceiptsServer) {
+  .controller('CreateAccountCtrl', function ($scope, $window, ReceiptsServer, DefService) {
 
-    $scope.signUp = function (email, username, password, password_confirmed) {
+    $scope.signUp = function (email, password, password_confirmed) {
 
       var invalidPasswordMessage = checkPasswordStrength(password);
       if (invalidPasswordMessage != '') {
 
 
-        messagesMaker(invalidPasswordMessage);
+        DefService.messagesMaker(invalidPasswordMessage);
       } else {
         if (password != password_confirmed) {
 
-          messagesMaker("Passwords are not the same");
+          DefService.messagesMaker("Passwords are not the same");
 
         } else {
 
-          ReceiptsServer.insertUser(email, username, password).then(function (response) {
-            if (response.data.message == "New user added to the best app ever!") {
+          ReceiptsServer.insertUser(email, password).then(function (response) {
 
-              messagesMaker(response.data.message);
-              //$window.sessionStorage.token = data.token;
-              $window.sessionStorage.token = '56ee6add41f6912a1931ebe6';
-              $state.go('tab.newReceipt');
+            if (response.data != '"That email is already taken."') {
+
+              DefService.messagesMaker('Account is created');
+              $window.sessionStorage.token = response.data.token;
+              DefService.goTo('tab.newReceipt');
 
             } else {
-              messagesMaker("Username already exists!!!");
+              DefService.messagesMaker(response.data);
             }
           }, function (error) {
-            messagesMaker("Error!!!");
+
+            console.log(error);
           });
 
 
@@ -55,20 +56,6 @@ angular.module('account.controllers', [])
       return invalidPasswordMessage;
 
     };
-
-    var messagesMaker = function (message) {
-      try {
-        $cordovaToast
-          .show(message, 'long', 'bottom')
-          .then(function (success) {
-            // success
-          }, function (error) {
-
-          });
-      } catch (ex) {
-        $window.alert(message);
-      }
-    }
 
 
   })
