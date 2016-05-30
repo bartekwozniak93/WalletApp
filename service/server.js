@@ -6,13 +6,18 @@ var receiptController = require('./controllers/receipt');
 var userController = require('./controllers/user');
 var passport = require('passport');
 var authController = require('./controllers/auth');
+
 var config = require('./config');
-var app = express();
+var express = require('express')
+    , cors = require('cors')
+    , app = express();
 
 mongoose.connect(config.dbconnection);
+app.use(cors());
 app.use(passport.initialize());
 app.use(bodyParser.json({limit: '10mb'}));
 app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
+
 
 passport.serializeUser(function(user, done) {
     done(null, user.id);
