@@ -12,7 +12,7 @@ angular.module('server.services', [])
 
       var req = {
         method: 'POST',
-        url: 'http://localhost:5000/api/local/users',
+        url: 'https://walletapplication.herokuapp.com/api/local/users',
         headers: {'Content-Type': 'application/x-www-form-urlencoded',
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
@@ -34,7 +34,7 @@ angular.module('server.services', [])
 
       var req = {
         method: 'POST',
-        url: 'http://localhost:5000/api/local/login',
+        url: 'https://walletapplication.herokuapp.com/api/local/login',
         headers: {'Content-Type': 'application/x-www-form-urlencoded',
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE",
@@ -53,7 +53,7 @@ angular.module('server.services', [])
 
       var req = {
         method: 'GET',
-        url: 'http://localhost:5000/api/local/user',
+        url: 'https://walletapplication.herokuapp.com/api/local/user',
         headers: {'Content-Type': 'application/x-www-form-urlencoded',
           "Authorization": auth,
           "Access-Control-Allow-Origin": "*",
@@ -94,7 +94,7 @@ angular.module('server.services', [])
 
       var auth = 'JWT ' + $window.sessionStorage.token;
 
-      return $http.post("http://localhost:5000/api/receipts", dataToPost, {
+      return $http.post("https://walletapplication.herokuapp.com/api/receipts", dataToPost, {
         headers: {
 
           "Authorization": auth,
@@ -114,7 +114,7 @@ angular.module('server.services', [])
 
       var auth = 'JWT ' + $window.sessionStorage.token;
 
-      return $http.post("http://localhost:5000/api/receipts", dataToPost, {
+      return $http.post("https://walletapplication.herokuapp.com/api/receipts", dataToPost, {
         headers: {
 
           "Authorization": auth,
@@ -130,7 +130,7 @@ angular.module('server.services', [])
 
       var auth = 'JWT ' + $window.sessionStorage.token;
 
-      var url = 'http://localhost:5000/api/receipts/' + receiptId;
+      var url = 'https://walletapplication.herokuapp.com/api/receipts/' + receiptId;
 
       var req = {
         method: 'GET',
@@ -149,7 +149,7 @@ angular.module('server.services', [])
 
         var req = {
           method: 'GET',
-          url: 'http://localhost:5000/api/receipts',
+          url: 'https://walletapplication.herokuapp.com/api/receipts',
           headers: {'Authorization': auth}
         };
 
@@ -187,7 +187,7 @@ angular.module('server.services', [])
 
       var auth = 'JWT ' + $window.sessionStorage.token;
 
-      var url = 'http://localhost:5000/api/receipts/' + receiptId;
+      var url = 'https://walletapplication.herokuapp.com/api/receipts/' + receiptId;
 
       var req = {
         method: 'DELETE',

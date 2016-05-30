@@ -1,6 +1,6 @@
 angular.module('newReceipts.controllers', [])
 
-  .controller('NewReceiptsCtrl', function ($scope, $cordovaImagePicker, $cordovaDialogs, PhotosAndFilesService, DatabaseService, ReceiptsServer, DefService) {
+  .controller('NewReceiptsCtrl', function ($scope, $window, $cordovaImagePicker, $cordovaDialogs, PhotosAndFilesService, DatabaseService, ReceiptsServer, DefService) {
 
     $scope.receiptsImagesList = [];
 

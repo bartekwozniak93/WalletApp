@@ -18,6 +18,7 @@ app.use(passport.initialize());
 app.use(bodyParser.json({limit: '10mb'}));
 app.use(bodyParser.urlencoded({limit: '10mb', extended: true}));
 
+
 passport.serializeUser(function(user, done) {
   done(null, user.id);
 });
@@ -86,5 +87,6 @@ router.route('/local/logout')
     .post(authController.isJWTAuthenticated, authController.logout);
 
 app.use('/api', router);
+var port = process.env.PORT || 8080;
 
-app.listen(5000);
+app.listen(port);
