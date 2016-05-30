@@ -74,5 +74,6 @@ router.route('/local/logout')
 
 
 app.use('/api', router);
+var port = process.env.PORT || 8080;
 
-app.listen(5000);
+app.listen(port);
