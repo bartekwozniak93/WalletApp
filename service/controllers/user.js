@@ -1,4 +1,4 @@
-var nJwt = require('nJwt');
+var nJwt = require('njwt');
 var ValidToken = require('../controllers/validToken');
 var User = require('../models/user');
 var config = require('../config');
