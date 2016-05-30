@@ -25,6 +25,10 @@
     {
       "locator": "https://github.com/brodysoft/Cordova-SQLitePlugin",
       "id": "cordova-sqlite-storage"
+    },
+    {
+      "locator": "https://github.com/apache/cordova-plugin-whitelist.git",
+      "id": "cordova-plugin-whitelist"
     }
   ],
   "cordovaPlatforms": [
