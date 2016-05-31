@@ -1,6 +1,5 @@
 var auth = require('google-api-utility')
   , autrequest = auth.request
-var config = require('./config');
 
 exports.OCR = function(imgContent, callback){
 	var jsonfile = 'MY_KEY.json';
