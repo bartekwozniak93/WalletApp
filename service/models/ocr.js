@@ -59,7 +59,6 @@ exports.OCR = function(imgContent, callback){
 						dateReceipt:sData,
 						price:sPrice
 					};
-					console.log(out.price);
 					callback(null,out);
 				}catch(err){
 					callback(err,null);
