@@ -2,7 +2,7 @@ var auth = require('google-api-utility')
   , autrequest = auth.request
 
 exports.OCR = function(imgContent, callback){
-	var jsonfile = 'MY_KEY.json';
+	var jsonfile = 'service/MY_KEY.json';
 	var baseurl = 'https://vision.googleapis.com/v1/images:annotate';
 	auth.init({
 		scope: ['https://www.googleapis.com/auth/cloud-platform'].join(' '),
