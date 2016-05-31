@@ -37,6 +37,7 @@ exports.OCR = function(imgContent, callback){
 					if(a = allText.match(new RegExp('(S|s)(U|u)(M|m|N|n)(A|a)( )*(.){2,3}( )* [0-9]*(,)[0-9]{2}', 'g'))) sPrice=parseFloat(a[0].split(' ')[2].replace(",","."));
 					else if (a = allText.match(new RegExp('(S|s)(U|u)(M|m|N|n)(A|a)(:)( )*[0-9]*(,)[0-9]{2}', 'g'))) sPrice=parseFloat(a[0].split(' ')[1].replace(",","."));
 					else if (a = allText.match(new RegExp('(R|r)(A|a)(Z|z)(E|e)(M|m)( )*(.){2,3}( )* [0-9]*(,)[0-9]{2}', 'g'))) sPrice=parseFloat(a[0].split(' ')[2].replace(",","."));
+					else if (a = allText.match(new RegExp('(P|p)(L|l)(N|n)( )*[0-9]*(,)[0-9]{2}', 'g'))) sPrice=parseFloat(a[0].split(' ')[2].replace(",","."));
 					else sPrice=" ";
 					}catch(err){ sPrice=" ";}
 				//Time
