@@ -160,7 +160,7 @@ angular.module('server.services', [])
     serverServices.updateReceipt = function (receipt) {
 
       var auth = 'JWT ' + $window.sessionStorage.token;
-      var url = 'http://localhost:5000/api/receipts/' + receipt._id;
+      var url = 'https://walletapplication.herokuapp.com/api/receipts/' + receipt._id;
 
       var dataToPost = {};
 
