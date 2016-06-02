@@ -93,7 +93,7 @@ exports.getReceipt = function(req, res) {
         if (!receipt || req.user._id !=  receipt.userId)
             res.json({message: 'Could not find receipt in the wallet!', data:null});
         else{
-            receipt.attTN = "";
+            receipt.att = "";
             res.json({message: 'Receipt found in the wallet!', data:receipt});
         }
     });
