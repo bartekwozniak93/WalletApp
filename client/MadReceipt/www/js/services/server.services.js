@@ -144,15 +144,7 @@ angular.module('server.services', [])
         headers: {'Authorization': auth}
       };
 
-      var deferred = $q.defer();
-      $http(req).success(function (data) {
-        deferred.resolve(data);
-      }).error(function (msg, code) {
-        deferred.reject(msg);
-
-      });
-
-      return deferred.promise;
+      return $http(req);
 
     };
 
@@ -167,15 +159,8 @@ angular.module('server.services', [])
           headers: {'Authorization': auth}
         };
 
-      var deferred = $q.defer();
-      $http(req).success(function (data) {
-        deferred.resolve(data);
-      }).error(function (msg, code) {
-        deferred.reject(msg);
 
-      });
-
-      return deferred.promise;
+      return $http(req);
 
       };
 
@@ -200,15 +185,7 @@ angular.module('server.services', [])
         data: dataToPost
       };
 
-      var deferred = $q.defer();
-      $http(req).success(function (data) {
-        deferred.resolve(data);
-      }).error(function (msg, code) {
-        deferred.reject(msg);
-
-      });
-
-      return deferred.promise;
+      return $http(req);
 
     };
 
@@ -225,15 +202,7 @@ angular.module('server.services', [])
         headers: {'Authorization': auth}
       };
 
-      var deferred = $q.defer();
-      $http(req).success(function (data) {
-        deferred.resolve(data);
-      }).error(function (msg, code) {
-        deferred.reject(msg);
-
-      });
-
-      return deferred.promise;
+      return $http(req);
 
     };
 

@@ -21,7 +21,7 @@
                 class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="receipt in receipts"
                 type="item-text-wrap" href="#/tab/sreceipts/{{receipt.data._id}}">
 
-        <img ng-src="{{getBase64Image(receipt.data.att)}}">
+        <img ng-src="{{receipt.data.attTN}}">
         <h2>Company: {{receipt.data.companyName}}</h2>
 
         <p><b>Date:</b> {{receipt.data.dateReceipt}}</p>
