@@ -8,11 +8,10 @@ exports.postAtt = function(req, res) {
     try{
         ocr(req.body.att,function(err,data){
             if(err) throw err;
-            console.log(data);
             var receipt = new Receipt();
             receipt.att = req.body.att;
             receipt.textReceipt = data.textReceipt;
-            receipt.userId = "qba"//req.user._id;
+            receipt.userId = req.user._id;
 
             if(req.body.dateCreation == undefined)
                 receipt.dateCreation = Date.now();
@@ -40,9 +39,7 @@ exports.postAtt = function(req, res) {
                 receipt.price = req.body.receipt;
             ctn(req.body.att,function(err,data){
                 if(err) receipt.attTN="";
-                else{
-                console.log('2')
-                receipt.attTN=data;}
+                else receipt.attTN=data;
                 receipt.save(function(err) {
                     if (err)
                         res.send(err);
@@ -96,7 +93,7 @@ exports.getReceipt = function(req, res) {
         if (!receipt || req.user._id !=  receipt.userId)
             res.json({message: 'Could not find receipt in the wallet!', data:null});
         else{
-            receipt.att = "";
+            receipt.attTN = "";
             res.json({message: 'Receipt found in the wallet!', data:receipt});
         }
     });
