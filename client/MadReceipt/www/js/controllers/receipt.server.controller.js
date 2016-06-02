@@ -1,9 +1,10 @@
 angular.module('receipt.server.controllers', [])
-  .controller('ReceiptServerCtrl', function ($scope, $stateParams, ReceiptsServer, DefService) {
+  .controller('ReceiptServerCtrl', function ($scope, $window, $stateParams, ReceiptsServer, DefService) {
 
     $scope.$on('$ionicView.enter', function () {
       $scope.receipt = [];
       DefService.show();
+
 
       ReceiptsServer.selectReceipt($stateParams.receiptId).then(function (receipt) {
 

@@ -1,10 +1,18 @@
 angular.module('receiptsList.controllers', [])
-  .controller('ReceiptsListCtrl', function ($scope, $window, $state, $http, $cordovaToast, $ionicLoading, DatabaseService, DefService) {
+  .controller('ReceiptsListCtrl', function ($timeout, $scope, $window, $state, $http, $cordovaToast, $ionicLoading, DatabaseService, DefService) {
 
     $scope.$on('$ionicView.enter', function () {
       $scope.receipts = [];
       $scope.getReceipts();
     });
+
+    $scope.$on("$ionicView.destroy", function (event) {
+      $timeout.cancel(timer);
+    });
+
+    var timer = $timeout(function () {
+      console.log("Timeout executed", Date.now());
+    }, 2000);
 
 
     $scope.getReceipts = function () {

@@ -1,6 +1,6 @@
 angular.module('server.services', [])
 
-  .factory('ReceiptsServer', function ($http, $window) {
+  .factory('ReceiptsServer', function ($q, $http, $window) {
 
 
     var serverServices = {};
@@ -20,6 +20,7 @@ angular.module('server.services', [])
           "Access-Control-Allow-Headers": "x-requested-with"},
         data: dataToPost
       };
+
 
       return $http(req);
 
@@ -43,6 +44,7 @@ angular.module('server.services', [])
         data: dataToPost
       };
 
+
       return $http(req);
 
     };
@@ -64,13 +66,22 @@ angular.module('server.services', [])
 
       };
 
-      return $http(req);
+      var deferred = $q.defer();
+      $http(req).success(function (data) {
+        deferred.resolve(data);
+      }).error(function (msg, code) {
+        deferred.reject(msg);
+
+      });
+
+      return deferred.promise;
 
     };
 
 
     serverServices.insertReceipt = function (receipt) {
-      var image = receipt.att.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+      //var image = receipt.att.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+      var image = receipt.att;
 
       var dataToPost = {};
       dataToPost["att"] = image;
@@ -107,7 +118,9 @@ angular.module('server.services', [])
     };
 
     serverServices.insertReceiptWithImageOnly = function (receiptImage) {
-      var image = receiptImage.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+      //console.log(receiptImage);
+      //var image = receiptImage.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+      var image = receipt.att;
 
       var dataToPost = {};
       dataToPost["att"] = image;
@@ -138,7 +151,15 @@ angular.module('server.services', [])
         headers: {'Authorization': auth}
       };
 
-      return $http(req);
+      var deferred = $q.defer();
+      $http(req).success(function (data) {
+        deferred.resolve(data);
+      }).error(function (msg, code) {
+        deferred.reject(msg);
+
+      });
+
+      return deferred.promise;
 
     };
 
@@ -153,7 +174,15 @@ angular.module('server.services', [])
           headers: {'Authorization': auth}
         };
 
-        return $http(req);
+      var deferred = $q.defer();
+      $http(req).success(function (data) {
+        deferred.resolve(data);
+      }).error(function (msg, code) {
+        deferred.reject(msg);
+
+      });
+
+      return deferred.promise;
 
       };
 
@@ -178,7 +207,15 @@ angular.module('server.services', [])
         data: dataToPost
       };
 
-      return $http(req);
+      var deferred = $q.defer();
+      $http(req).success(function (data) {
+        deferred.resolve(data);
+      }).error(function (msg, code) {
+        deferred.reject(msg);
+
+      });
+
+      return deferred.promise;
 
     };
 
@@ -195,7 +232,15 @@ angular.module('server.services', [])
         headers: {'Authorization': auth}
       };
 
-      return $http(req);
+      var deferred = $q.defer();
+      $http(req).success(function (data) {
+        deferred.resolve(data);
+      }).error(function (msg, code) {
+        deferred.reject(msg);
+
+      });
+
+      return deferred.promise;
 
     };
 

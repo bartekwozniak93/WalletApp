@@ -1,12 +1,22 @@
 angular.module('serverReceiptsList.controllers', [])
-  .controller('ServerReceiptsListCtrl', function ($scope, $window, $ionicLoading, ReceiptsServer, DefService) {
+  .controller('ServerReceiptsListCtrl', function ($timeout, $scope, $window, $ionicLoading, ReceiptsServer, DefService) {
 
     $scope.receiptsNo;
 
     $scope.$on('$ionicView.enter', function () {
       $scope.receipts = [];
       $scope.getReceiptsFromServer();
+
+
     });
+    $scope.$on("$ionicView.destroy", function (event) {
+      $timeout.cancel(timer);
+    });
+
+    var timer = $timeout(function () {
+      console.log("Timeout executed", Date.now());
+    }, 2000);
+
 
 
     $scope.getReceiptsFromServer = function () {
@@ -21,7 +31,7 @@ angular.module('serverReceiptsList.controllers', [])
 
           var token = 'JWT ' + $window.sessionStorage.token;
 
-          //console.log(token);
+          console.log(token);
 
           ReceiptsServer.selectAllReceipts().then(function (receiptsList) {
 

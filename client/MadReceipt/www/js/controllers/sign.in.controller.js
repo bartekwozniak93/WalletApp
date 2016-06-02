@@ -1,5 +1,14 @@
 angular.module('sign.in.controllers', [])
-  .controller('SignInCtrl', function ($scope, $window, ReceiptsServer, DefService) {
+  .controller('SignInCtrl', function ($timeout, $scope, $window, ReceiptsServer, DefService) {
+
+    $scope.$on("$ionicView.destroy", function (event) {
+      $timeout.cancel(timer);
+    });
+
+    var timer = $timeout(function () {
+      console.log("Timeout executed", Date.now());
+    }, 2000);
+
 
     $scope.signIn = function (email, password) {
 
