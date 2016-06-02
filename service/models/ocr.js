@@ -2,7 +2,7 @@ var auth = require('google-api-utility')
   , autrequest = auth.request
 
 exports.OCR = function(imgContent, callback){
-	var jsonfile = 'MY_KEY.json';
+	var jsonfile = 'service/MY_KEY.json';
 	var baseurl = 'https://vision.googleapis.com/v1/images:annotate';
 	auth.init({
 		scope: ['https://www.googleapis.com/auth/cloud-platform'].join(' '),
@@ -10,7 +10,7 @@ exports.OCR = function(imgContent, callback){
 	});
 
 	req ={
-		image: {content: imgContent},
+		image: {content: imgContent.split(',')[1]},
         	features:[],
 	}
 	req.features.push({ 
@@ -36,7 +36,9 @@ exports.OCR = function(imgContent, callback){
 					try{
 					if(a = allText.match(new RegExp('(S|s)(U|u)(M|m|N|n)(A|a)( )*(.){2,3}( )* [0-9]*(,)[0-9]{2}', 'g'))) sPrice=parseFloat(a[0].split(' ')[2].replace(",","."));
 					else if (a = allText.match(new RegExp('(S|s)(U|u)(M|m|N|n)(A|a)(:)( )*[0-9]*(,)[0-9]{2}', 'g'))) sPrice=parseFloat(a[0].split(' ')[1].replace(",","."));
+					else if (a = allText.match(new RegExp('(S|s)(U|u)(M|m|N|n)(A|a)( )*[0-9]*(,)[0-9]{2}', 'g'))) sPrice=parseFloat(a[0].split(' ')[1].replace(",","."));
 					else if (a = allText.match(new RegExp('(R|r)(A|a)(Z|z)(E|e)(M|m)( )*(.){2,3}( )* [0-9]*(,)[0-9]{2}', 'g'))) sPrice=parseFloat(a[0].split(' ')[2].replace(",","."));
+					else if (a = allText.match(new RegExp('(P|p)(L|l)(N|n)( )*[0-9]*(,)[0-9]{2}', 'g'))) sPrice=parseFloat(a[0].split(' ')[1].replace(",","."));
 					else sPrice=" ";
 					}catch(err){ sPrice=" ";}
 				//Time
