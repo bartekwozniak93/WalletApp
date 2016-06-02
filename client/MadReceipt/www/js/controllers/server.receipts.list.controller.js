@@ -34,12 +34,13 @@ angular.module('serverReceiptsList.controllers', [])
           console.log(token);
 
           ReceiptsServer.selectAllReceipts().then(function (receiptsList) {
-
+            //console.log(receiptsList);
             DefService.hide();
             $scope.receipts = receiptsList.data;
             $scope.receiptsNo = receiptsList.data.length;
 
-            console.log(receiptsList);
+            //console.log(receiptsList);
+            console.log(JSON.stringify(receiptsList));
 
           }, function (error) {
             DefService.hide();

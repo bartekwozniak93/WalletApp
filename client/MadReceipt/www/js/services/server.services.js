@@ -66,15 +66,8 @@ angular.module('server.services', [])
 
       };
 
-      var deferred = $q.defer();
-      $http(req).success(function (data) {
-        deferred.resolve(data);
-      }).error(function (msg, code) {
-        deferred.reject(msg);
 
-      });
-
-      return deferred.promise;
+      return $http(req);
 
     };
 
@@ -120,7 +113,7 @@ angular.module('server.services', [])
     serverServices.insertReceiptWithImageOnly = function (receiptImage) {
       //console.log(receiptImage);
       //var image = receiptImage.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
-      var image = receipt.att;
+      var image = receiptImage;
 
       var dataToPost = {};
       dataToPost["att"] = image;
