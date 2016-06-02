@@ -2,33 +2,34 @@ var auth = require('google-api-utility')
   , autrequest = auth.request
 
 exports.OCR = function(imgContent, callback){
-	var jsonfile = 'service/MY_KEY.json';
-	var baseurl = 'https://vision.googleapis.com/v1/images:annotate';
-	auth.init({
-		scope: ['https://www.googleapis.com/auth/cloud-platform'].join(' '),
-		json_file: jsonfile
-	});
+	try{
+		var jsonfile = 'service/MY_KEY.json';
+		var baseurl = 'https://vision.googleapis.com/v1/images:annotate';
+		auth.init({
+			scope: ['https://www.googleapis.com/auth/cloud-platform'].join(' '),
+			json_file: jsonfile
+		});
 
-	req ={
-		image: {content: imgContent.split(',')[1]},
-        	features:[],
-	}
-	req.features.push({ 
+		req ={
+			image: {content: imgContent.split(',')[1]},
+        		features:[],
+		}
+		req.features.push({ 
 			type:'TEXT_DETECTION',
 			maxResults: 1
 			});
-	request={
-		requests:[],
-	}
-	request.requests.push(req);	
-	autrequest(
-		{url:baseurl,
-		method:'post',
-		json:request},
-		function (error, req, dat){
-			if(error)callback(error,null);
-			else{
-				try{
+		request={
+			requests:[],
+		}
+		request.requests.push(req);	
+		autrequest(
+			{url:baseurl,
+			method:'post',
+			json:request},
+			function (error, req, dat){
+				if(error)callback(error,null);
+				else{
+	
 					data = JSON.stringify(dat.responses[0].textAnnotations[0].description); 			
 					lines=data.split('\\n');
 					allText=lines.join(' ');
@@ -60,11 +61,10 @@ exports.OCR = function(imgContent, callback){
 						price:sPrice
 					};
 					callback(null,out);
-				}catch(err){
-					callback(err,null);
 				}
-			}
-		}
-		
-	);
+			});
+	}catch(err){
+		callback(err,null);
+	}
+
 }
