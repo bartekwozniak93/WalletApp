@@ -42,6 +42,9 @@ router.route('/receipts/:receipt_id')
     .put(authController.isJWTAuthenticated, receiptController.putReceipt)
     .delete(authController.isJWTAuthenticated, receiptController.deleteReceipt);
 
+router.route('/receipts/att/:receipt_id')
+    .get(authController.isJWTAuthenticated, receiptController.getReceiptAtt);
+
 //router.route('/receipts/att')
    // .post(authController.isJWTAuthenticated, receiptController.postAtt);
 

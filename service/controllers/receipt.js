@@ -1,19 +1,18 @@
 var Receipt = require('../models/receipt');
 var ocr=require('../models/ocr').OCR;
-var sync=require('synchronize');
+var ctn=require('../models/imageProcessing').CreateTN;
 
 exports.postAtt = function(req, res) {
 
 
     try{
         ocr(req.body.att,function(err,data){
-            if(err)
-                res.send(err);
-
+            if(err) throw err;
+            console.log(data);
             var receipt = new Receipt();
             receipt.att = req.body.att;
             receipt.textReceipt = data.textReceipt;
-            receipt.userId = req.user._id;
+            receipt.userId = "qba"//req.user._id;
 
             if(req.body.dateCreation == undefined)
                 receipt.dateCreation = Date.now();
@@ -39,12 +38,19 @@ exports.postAtt = function(req, res) {
                 receipt.price = data.price;
             else
                 receipt.price = req.body.receipt;
-
-            receipt.save(function(err) {
-                if (err)
-                    res.send(err);
-                res.json({ message: 'Receipt added to the wallet!', id:receipt._id, data: receipt });
+            ctn(req.body.att,function(err,data){
+                if(err) receipt.attTN="";
+                else{
+                console.log('2')
+                receipt.attTN=data;}
+                receipt.save(function(err) {
+                    if (err)
+                        res.send(err);
+                    receipt.att = "";
+                    res.json({ message: 'Receipt added to the wallet!', id:receipt._id, data: receipt });
+                });
             });
+            
         });
 	}catch(err){
 		res.json({message: 'Unable to read att ', error: err});
@@ -72,12 +78,13 @@ exports.postAtt = function(req, res) {
 }*/
 
 exports.getReceipts = function(req, res) {
-    Receipt.find({userId: req.user._id},function(err, receipts) {
+    Receipt.find({userId:req.user._id},function(err, receipts) {
         if (err)
             res.send(err);
         allReceipts=[];
         for(var num in receipts)
-            allReceipts.push({id:receipts[num]._id, data:receipts[num]});
+            receipts[num].att = "";
+            allReceipts.push({id:receipts[num], data:receipts[num]});
         res.json(allReceipts);
    });
 };
@@ -88,8 +95,22 @@ exports.getReceipt = function(req, res) {
             res.send(err);
         if (!receipt || req.user._id !=  receipt.userId)
             res.json({message: 'Could not find receipt in the wallet!', data:null});
-        else
+        else{
+            receipt.att = "";
             res.json({message: 'Receipt found in the wallet!', data:receipt});
+        }
+    });
+};
+
+exports.getReceiptAtt = function(req, res) {
+    Receipt.findById(req.params.receipt_id, function(err, receipt) {
+        if (err)
+            res.send(err);
+        if (!receipt || req.user._id !=  receipt.userId)
+            res.json({message: 'Could not find receipt in the wallet!', data:null});
+        else{
+            res.json({message: 'Receipt found in the wallet!', att:receipt.att});
+        }
     });
 };
 
@@ -108,9 +129,9 @@ exports.putReceipt = function(req, res) {
             receipt.price = req.body.price;
 
             receipt.save(function(err) {
-            if (err)
-                res.send(err);
-
+                if (err)
+                    res.send(err);
+                receipt.att = "";
                 res.json({ message: 'Receipt update in the wallet!', data: receipt });
             });
         }
