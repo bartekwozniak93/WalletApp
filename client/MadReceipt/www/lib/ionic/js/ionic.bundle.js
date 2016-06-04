@@ -55704,7 +55704,7 @@ IonicModule
   '$timeout',
   '$ionicPlatform',
   '$ionicTemplateLoader',
-  '$$q',
+  '$q',
   '$log',
   '$ionicClickBlock',
   '$window',

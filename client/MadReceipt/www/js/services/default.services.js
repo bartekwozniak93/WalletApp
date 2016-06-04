@@ -1,6 +1,6 @@
 angular.module('default.services', ['ionic', 'ngCordova'])
 
-  .factory('DefService', function ($state, $window, $ionicLoading) {
+  .factory('DefService', function ($state, $window, $ionicLoading, $ionicPopup) {
 
 
     var defaultServices = {};
@@ -28,17 +28,9 @@ angular.module('default.services', ['ionic', 'ngCordova'])
 
 
     defaultServices.messagesMaker = function (message) {
-      try {
-        $cordovaToast
-          .show(message, 'long', 'bottom')
-          .then(function (success) {
-            // success
-          }, function (error) {
-
-          });
-      } catch (ex) {
-        $window.alert(message);
-      }
+      return $ionicPopup.alert({
+        template: message
+      })
     };
 
 
@@ -46,6 +38,7 @@ angular.module('default.services', ['ionic', 'ngCordova'])
 
       $state.go(destinationPage);
     };
+    
 
     return defaultServices;
   });
