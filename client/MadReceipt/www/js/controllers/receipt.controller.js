@@ -1,5 +1,5 @@
 angular.module('receipt.controllers', [])
-  .controller('ReceiptCtrl', function ($scope, $state, $window, $stateParams, DatabaseService, DefService) {
+  .controller('ReceiptCtrl', function ($scope, $state, $window, $stateParams, DatabaseService, ReceiptsServer, DefService) {
 
     $scope.$on('$ionicView.enter', function () {
       $scope.receipt = [];
@@ -43,6 +43,26 @@ angular.module('receipt.controllers', [])
         console.log(error);
 
       });
+    };
+
+    $scope.updateReceiptOnServer = function (receipt) {
+      if (receipt.server_id != 0) {
+        if ($window.sessionStorage.token == undefined) {
+          DefService.messagesMaker("You're not logged in");
+          DefService.goTo('signin');
+        } else {
+          ReceiptsServer.updateReceipt(receipt).then(function () {
+            DefService.messagesMaker("Receipt updated");
+            $scope.updateReceipt();
+
+          }, function (error) {
+            console.log(error);
+
+          });
+        }
+      } else {
+        DefService.messagesMaker("Receipt is not online");
+      }
     };
 
 

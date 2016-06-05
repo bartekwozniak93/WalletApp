@@ -31,6 +31,18 @@ angular.module('default.services', ['ionic', 'ngCordova'])
       return $ionicPopup.alert({
         template: message
       })
+
+      /* try {
+       -        $cordovaToast
+       -          .show(message, 'long', 'bottom')
+       -          .then(function (success) {
+       -            // success
+       -          }, function (error) {
+       -
+       -          });
+       -      } catch (ex) {
+       -        $window.alert(message);
+       -      }*/
     };
 
 
@@ -38,7 +50,7 @@ angular.module('default.services', ['ionic', 'ngCordova'])
 
       $state.go(destinationPage);
     };
-    
+
 
     return defaultServices;
   });

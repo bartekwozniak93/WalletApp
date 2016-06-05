@@ -1,4 +1,4 @@
-angular.module('starter', ['ionic', 'ngCordova', 'ionic.ion.autoListDivider', 'chart.js', 'default.services', 'start.page.controllers', 'sign.in.controllers', 'account.controllers', 'newReceipts.controllers', 'receipt.controllers', 'receipt.server.controllers', 'serverReceiptsList.controllers', 'serverUpload.controllers', 'receiptsList.controllers', 'statistics.controllers', 'server.services', 'photos.and.files.services', 'database.services'])
+angular.module('starter', ['ionic', 'ngCordova', 'ionic.ion.autoListDivider', 'chart.js', 'default.services', 'start.page.controllers', 'sign.in.controllers', 'account.controllers', 'newReceipts.controllers', 'receipt.controllers', 'serverUpload.controllers', 'receiptsList.controllers', 'statistics.controllers', 'server.services', 'photos.and.files.services', 'database.services'])
 
   .run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
@@ -59,24 +59,6 @@ angular.module('starter', ['ionic', 'ngCordova', 'ionic.ion.autoListDivider', 'c
         }
       })
 
-      .state('tab.serverReceiptsList', {
-        url: '/serverReceiptsList',
-        views: {
-          'tab-server-receipts-list': {
-            templateUrl: 'templates/tab-server-receipts-list.html',
-            controller: 'ServerReceiptsListCtrl'
-          }
-        }
-      })
-      .state('tab.server-receipt-detail', {
-        url: '/sreceipts/:receiptId',
-        views: {
-          'tab-server-receipts-list': {
-            templateUrl: 'templates/receipt-server-detail.html',
-            controller: 'ReceiptServerCtrl'
-          }
-        }
-      })
 
 
       .state('tab.receiptsList', {

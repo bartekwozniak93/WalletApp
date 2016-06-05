@@ -100,7 +100,7 @@ angular.module('newReceipts.controllers', [])
 
     $scope.addReceiptsToServer = function () {
       if ($scope.receiptsImagesList.length) {
-        DefService.goTo('tab.serverReceiptsList');
+
 
         angular.forEach($scope.receiptsImagesList, function (receipt) {
           DefService.show();
@@ -110,7 +110,7 @@ angular.module('newReceipts.controllers', [])
               console.log("send success");
               DatabaseService.updateOnlineStatus(receipt._id);
 
-
+              DefService.goTo('tab.receiptsList');
             }, function (error) {
               DefService.hide();
               console.log(error);
@@ -132,7 +132,7 @@ angular.module('newReceipts.controllers', [])
 
 
     $scope.save = function () {
-      console.log("in save");
+
       var message = "Do you want to save receipts in our server?";
       $ionicPopup.show({
         template: message,
