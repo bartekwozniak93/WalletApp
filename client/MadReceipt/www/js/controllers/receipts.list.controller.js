@@ -1,10 +1,18 @@
 angular.module('receiptsList.controllers', [])
-  .controller('ReceiptsListCtrl', function ($scope, $window, $state, $http, $cordovaToast, $ionicLoading, DatabaseService, DefService) {
+  .controller('ReceiptsListCtrl', function ($timeout, $scope, $window, $state, $http, $cordovaToast, $ionicLoading, DatabaseService, ReceiptsServer, DefService) {
 
     $scope.$on('$ionicView.enter', function () {
       $scope.receipts = [];
       $scope.getReceipts();
     });
+
+    $scope.$on("$ionicView.destroy", function (event) {
+      $timeout.cancel(timer);
+    });
+
+    var timer = $timeout(function () {
+      console.log("Timeout executed", Date.now());
+    }, 2000);
 
 
     $scope.getReceipts = function () {
@@ -40,7 +48,45 @@ angular.module('receiptsList.controllers', [])
 
     };
 
+    /*    $scope.downloadReceipts = function () {
+     if ($window.sessionStorage.token != undefined) {
 
+
+     DefService.goTo('tab.receipt-upload');
+     } else {
+     DefService.messagesMaker("You must be logged in to download receipts");
+     DefService.goTo('signin');
+     }
+
+     };*/
+
+    $scope.downloadReceipts = function () {
+
+      $scope.receipts = [];
+
+
+      if ($window.sessionStorage.token == undefined) {
+        DefService.messagesMaker("You're not logged in");
+      } else {
+
+        var token = 'JWT ' + $window.sessionStorage.token;
+
+        DatabaseService.removeOnline();
+
+        ReceiptsServer.selectAllReceipts().then(function (receiptsList) {
+          console.log(receiptsList);
+
+          DatabaseService.insertFromServer(receiptsList);
+          $scope.getReceipts();
+
+        }, function (error) {
+          DefService.hide();
+          console.log(error);
+
+        });
+      }
+
+    };
 
     $scope.removeReceipt = function(receiptId){
       DatabaseService.remove(receiptId).then(function () {

@@ -69,6 +69,10 @@ div.spacer {
   display: none;
 }
 
+.md-scroll-mask {
+  position: initial;
+}
+
 .center{
   display: -webkit-box;
   display: -moz-box;

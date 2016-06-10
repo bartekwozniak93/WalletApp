@@ -1,6 +1,6 @@
 angular.module('server.services', [])
 
-  .factory('ReceiptsServer', function ($http, $window) {
+  .factory('ReceiptsServer', function ($q, $http, $window) {
 
 
     var serverServices = {};
@@ -20,6 +20,7 @@ angular.module('server.services', [])
           "Access-Control-Allow-Headers": "x-requested-with"},
         data: dataToPost
       };
+
 
       return $http(req);
 
@@ -43,6 +44,7 @@ angular.module('server.services', [])
         data: dataToPost
       };
 
+
       return $http(req);
 
     };
@@ -64,13 +66,15 @@ angular.module('server.services', [])
 
       };
 
+
       return $http(req);
 
     };
 
 
     serverServices.insertReceipt = function (receipt) {
-      var image = receipt.att.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+      //var image = receipt.att.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+      var image = receipt.att;
 
       var dataToPost = {};
       dataToPost["att"] = image;
@@ -107,7 +111,9 @@ angular.module('server.services', [])
     };
 
     serverServices.insertReceiptWithImageOnly = function (receiptImage) {
-      var image = receiptImage.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+      //console.log(receiptImage);
+      //var image = receiptImage.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+      var image = receiptImage;
 
       var dataToPost = {};
       dataToPost["att"] = image;
@@ -153,14 +159,15 @@ angular.module('server.services', [])
           headers: {'Authorization': auth}
         };
 
-        return $http(req);
+
+      return $http(req);
 
       };
 
     serverServices.updateReceipt = function (receipt) {
 
       var auth = 'JWT ' + $window.sessionStorage.token;
-      var url = 'https://walletapplication.herokuapp.com/api/receipts/' + receipt._id;
+      var url = 'https://walletapplication.herokuapp.com/api/receipts/' + receipt.server_id;
 
       var dataToPost = {};
 

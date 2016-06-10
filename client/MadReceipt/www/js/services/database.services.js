@@ -29,17 +29,17 @@ angular.module('database.services', ['ionic', 'ngCordova'])
 
       //tx.executeSql("DROP TABLE IF EXISTS receipts");
 
-      //tx.executeSql('CREATE TABLE IF NOT EXISTS receipts (id integer primary key unique, image blob unique, category
-      // varchar DEFAULT "Undefined", vendor varchar DEFAULT "Undefined", _date date, stuff varchar DEFAULT
-      // "Undefined", currency varchar DEFAULT "-", total real, description varchar DEFAULT "-")');
 
       tx.executeSql('CREATE TABLE IF NOT EXISTS receipts (' +
         'id integer primary key unique,' +
+        'server_id integer default 0,' +
         'att blob,' +
         'category varchar,' +
         'companyName varchar,' +
         'nip varchar,' +
         'dateReceipt date,' +
+        'dateCreation varchar, ' +
+        'dateLastModification varchar, ' +
         'price real,' +
         'textReceipt varchar,' +
         'online byte DEFAULT 0)');
@@ -82,6 +82,27 @@ angular.module('database.services', ['ionic', 'ngCordova'])
 
 
       },
+
+      insertFromServer: function (receiptsList) {
+
+        console.log("in insert");
+        var deferred = $q.defer();
+        var receiptsDB = createOrOpenDB();
+
+        receiptsDB.transaction(function (tx) {
+
+          console.log("in transaction");
+          console.log(receiptsList);
+          for (var i = 0; i < receiptsList.data.length; i++) {
+            console.log(receiptsList.data[i].data.companyName);
+
+            tx.executeSql("INSERT INTO receipts (server_id, att, companyName, nip, dateReceipt, dateCreation, dateLastModification, price, textReceipt, online) VALUES (?,?,?,?, ?, ?, ?, ?, ?, 1)",
+              [receiptsList.data[i].data._id, receiptsList.data[i].data.attTN, receiptsList.data[i].data.companyName, receiptsList.data[i].data.nip, receiptsList.data[i].data.dateReceipt, receiptsList.data[i].data.dateCreation, receiptsList.data[i].data.dateLastModification, receiptsList.data[i].data.price, receiptsList.data[i].data.textReceipt]);
+          }
+        }, deferred.reject, deferred.resolve);
+        return deferred.promise;
+      },
+
       select: function(receiptId){
 
 
@@ -98,11 +119,14 @@ angular.module('database.services', ['ionic', 'ngCordova'])
 
               var receipt = {
                 "_id": results.rows.item(i).id,
+                "server_id": results.rows.item(i).server_id,
                 "att": results.rows.item(i).att,
                 "category": results.rows.item(i).category,
                 "companyName": results.rows.item(i).companyName,
                 "nip": results.rows.item(i).nip,
                 "dateReceipt": results.rows.item(i).dateReceipt,
+                "dateCreation": results.rows.item(i).dateCreation,
+                "dateLastModification": results.rows.item(i).dateLastModification,
                 "price": results.rows.item(i).price,
                 "textReceipt": results.rows.item(i).textReceipt,
                 "online": results.rows.item(i).online
@@ -232,6 +256,20 @@ angular.module('database.services', ['ionic', 'ngCordova'])
 
         receiptsDB.transaction(function (tx) {
             tx.executeSql("DELETE FROM receipts WHERE id= (?)", [receiptId]);
+
+        }, deferred.reject, deferred.resolve);
+        return deferred.promise;
+      },
+
+
+      removeOnline: function () {
+
+
+        var deferred = $q.defer();
+        var receiptsDB = createOrOpenDB();
+
+        receiptsDB.transaction(function (tx) {
+          tx.executeSql("DELETE FROM receipts WHERE online=1");
 
         }, deferred.reject, deferred.resolve);
         return deferred.promise;

@@ -26,6 +26,14 @@
         <input placeholder="" type="date" ng-model="receipt.dateReceipt">
       </label>
       <label style="" class="item item-input">
+        <span class="input-label">Created</span>
+        <input placeholder="" type="text" ng-model="receipt.dateCreation" disabled>
+      </label>
+      <label style="" class="item item-input">
+        <span class="input-label">Last modified</span>
+        <input placeholder="" type="text" ng-model="receipt.dateLastModification" disabled>
+      </label>
+      <label style="" class="item item-input">
         <span class="input-label">Total</span>
         <input placeholder="" type="number" ng-model="receipt.price">
       </label>
@@ -35,6 +43,9 @@
       </label>
     </ion-list>
     <button class="button button-energized  button-block" id="updateReceipt-button" ng-click="updateReceipt(receipt)">Update</button>
+      <button class="button button-energized  button-block" id="updateReceiptOnServer-button"
+              ng-click="updateReceiptOnServer(receipt)">Update online
+      </button>
     </form>
 
   </ion-content>

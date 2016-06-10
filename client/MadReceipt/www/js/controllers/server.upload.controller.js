@@ -47,7 +47,7 @@ angular.module('serverUpload.controllers', [])
     $scope.sendToServer = function () {
 
 
-      DefService.goTo('tab.serverReceiptsList');
+      DefService.goTo('tab.receiptsList');
 
       var selectedReceiptsNo = 0;
       var proceedReceipts = 0;

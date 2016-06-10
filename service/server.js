@@ -55,6 +55,9 @@ router.route('/local/users')
 router.route('/local/user')
     .get(authController.isJWTAuthenticated, userController.getUser);
 
+router.route('/local/remaind')
+    .post(userController.remaindLocalPassword );
+
 router.route('/local/login')
     .post(authController.authenticateLocal, authController.generateToken);
 

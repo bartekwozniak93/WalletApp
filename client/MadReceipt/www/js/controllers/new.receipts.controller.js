@@ -1,6 +1,6 @@
 angular.module('newReceipts.controllers', [])
 
-  .controller('NewReceiptsCtrl', function ($scope, $window, $cordovaImagePicker, $cordovaDialogs, PhotosAndFilesService, DatabaseService, ReceiptsServer, DefService) {
+  .controller('NewReceiptsCtrl', function ($scope, $window, $cordovaImagePicker, $cordovaDialogs, $ionicPopup, PhotosAndFilesService, DatabaseService, ReceiptsServer, DefService) {
 
     $scope.receiptsImagesList = [];
 
@@ -50,9 +50,13 @@ angular.module('newReceipts.controllers', [])
 
     };
 
-    $scope.deleteImage = function (imageId) {
 
-      $cordovaDialogs.confirm('Are you sure you want to delete this receipt?', 'Delete receipt', ['Ok', 'Cancel'])
+    $scope.deleteImage = function (imageId) {
+      $ionicPopup.confirm({
+        template: 'Are you sure you want to delete this receipt?',
+        okText: 'Ok',
+        cancelText: 'Cancel'
+      })
         .then(function (buttonIndex) {
           // no button = 0, 'OK' = 1, 'Cancel' = 2
           if (buttonIndex == 1) {
@@ -66,6 +70,7 @@ angular.module('newReceipts.controllers', [])
 
       $scope.receiptsImagesList = [];
     };
+
 
     $scope.addReceiptsLocaly = function () {
       if ($scope.receiptsImagesList.length) {
@@ -92,9 +97,9 @@ angular.module('newReceipts.controllers', [])
       }
     };
 
+
     $scope.addReceiptsToServer = function () {
       if ($scope.receiptsImagesList.length) {
-        DefService.goTo('tab.serverReceiptsList');
 
 
         angular.forEach($scope.receiptsImagesList, function (receipt) {
@@ -105,7 +110,7 @@ angular.module('newReceipts.controllers', [])
               console.log("send success");
               DatabaseService.updateOnlineStatus(receipt._id);
 
-
+              DefService.goTo('tab.receiptsList');
             }, function (error) {
               DefService.hide();
               console.log(error);
@@ -118,35 +123,39 @@ angular.module('newReceipts.controllers', [])
 
         });
 
-
         DefService.hide()
       } else {
         DefService.messagesMaker("No receipts selected");
       }
 
-
     };
 
 
     $scope.save = function () {
-      console.log("in save");
+
       var message = "Do you want to save receipts in our server?";
-      $cordovaDialogs.confirm(message, 'Safely store your Receipts', ['Send to server', 'Use locally'])
-        .then(function (buttonIndex) {
-          // no button = 0, 'OK' = 1, 'Cancel' = 2
-          if (buttonIndex == 1) {
+      $ionicPopup.show({
+        template: message,
+        buttons: [{
+          text: 'Send to server',
+          type: 'button-default',
+          onTap: function() {
             if ($window.sessionStorage.token == undefined) {
               DefService.messagesMaker("You must be logged in");
             } else {
               $scope.addReceiptsToServer();
               $scope.receiptsImagesList = [];
             }
-          } else if (buttonIndex == 2) {
-
+          }
+        }, {
+          text: 'Use locally',
+          type: 'button-default',
+          onTap: function() {
             $scope.addReceiptsLocaly();
             $scope.receiptsImagesList = [];
           }
-        });
+        }]
+      })
     };
 
 
@@ -158,6 +167,7 @@ angular.module('newReceipts.controllers', [])
       DefService.goTo('start');
     };
 
+    
     var getFilesHelper = function (file) {
       DefService.show();
       PhotosAndFilesService.readFiles(file, $scope).then(function (selectedImages) {

@@ -4,9 +4,6 @@ angular.module('statistics.controllers', [])
     $scope.$on('$ionicView.enter', function () {
 
       $scope.series = ['Series A'];
-      /*$scope.data = [
-        [65, 59, 80, 81, 56, 55, 40]
-      ];*/
       createDataForCategoryChart();
     });
 
@@ -15,6 +12,8 @@ angular.module('statistics.controllers', [])
       DefService.show();
       try {
         DatabaseService.selectAll().then(function (receiptsList) {
+
+          console.log(receiptsList);
 
           var categoriesList  = [];
           var dateList = [];
@@ -155,45 +154,7 @@ angular.module('statistics.controllers', [])
     $scope.goHome = function () {
       DefService.goTo('start');
     };
-    /*
-     $scope.getReceiptsFromServer = function () {
-     $scope.connectionMessage ='';
 
-     if (window.navigator.onLine) {
-     var token = $window.sessionStorage.token;
-
-     if (token == '') {
-     $scope.connectionMessage = "You're not logged in";
-     } else {
-
-     var req = {
-     method: 'GET',
-     url: 'http://localhost:5000/api/receipts',
-
-     headers: {'Authorization': token}
-     };
-
-     $http(req).then(function successCallback(response) {
-
-     if (response.data != "Unauthorized") {
-
-     $scope.receipts = response.data;
-
-     } else {
-     $scope.connectionMessage = "Problem with connection to server";
-     }
-     }, function errorCallback(response) {
-     $scope.connectionMessage = "Problem with connection to server";
-     });
-     }
-     } else {
-     $scope.connectionMessage = "You are offline";
-     }
-
-
-     };
-
-     */
 
 
 
