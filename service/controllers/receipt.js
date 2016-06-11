@@ -79,9 +79,10 @@
           if (err)
               res.send(err);
           allReceipts=[];
-          for(var num in receipts)
+          for(var num in receipts){
               receipts[num].att = "";
               allReceipts.push({id:receipts[num], data:receipts[num]});
+          }
           res.json(allReceipts);
      });
   };
