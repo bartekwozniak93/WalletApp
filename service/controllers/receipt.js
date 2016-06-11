@@ -42,7 +42,6 @@
                       if (err)
                           res.send(err);
                       else{
-                          console.log ("add to wallet"+ receipt);
                           receipt.att = "";
                           res.json({ message: 'Receipt added to the wallet!', id:receipt._id, data: receipt });
                       }
