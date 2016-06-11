@@ -27,10 +27,11 @@ exports.postUsers = function(req, res, next) {
 };
 
 exports.remaindLocalPassword = function(req, res) {
-    var email = req.body.email;
+    
     if (email == undefined) {
         res.end('Email cannot be empty.');
     } else {
+    	var email = req.body.email;
         User.findOne({ 'local.email': email }, function(err, user) {
             if (err) {
                 res.send(err);
