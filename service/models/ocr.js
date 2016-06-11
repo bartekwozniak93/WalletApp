@@ -11,7 +11,7 @@ exports.OCR = function(imgContent, callback){
 		});
 
 		req ={
-			image: {content: imgContent},
+			image: {content: imgContent.source.split(',')[1]},
 			features:[],
 		}
 		req.features.push({ 
