@@ -151,7 +151,7 @@ passport.use(new JwtStrategy({
 passport.use(new FacebookStrategy({
         clientID: "1593351117580473",
         clientSecret: "c1b3b0fb3b72ca78b64ad302f58f287e",
-        callbackURL: "http://localhost:5000/api/facebook/login/callback",
+        callbackURL: "https://walletapplication.herokuapp.com/api/facebook/login/callback",
         profileFields: ['id', 'emails'],
         passReqToCallback: true
     },
